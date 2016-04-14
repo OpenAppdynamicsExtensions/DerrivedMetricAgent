@@ -11,15 +11,18 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 //apply plugin: 'idea'
-apply plugin: 'maven'
+//apply plugin: 'maven'
 apply from: 'base.gradle'
 
 
 version='1.0'
 
 
-AgentName ='DerrivedMetricsAgent'
-AgentPackageName='DerrivedMetricsAgent'
+project.ext {
+    AgentName ='DerrivedMetricsAgent'
+    AgentPackageName='DerrivedMetricsAgent'
+}
+
 
 repositories {
     maven {
@@ -61,17 +64,17 @@ generateMonitorXML {
     timeout = 120
     agentName=AgentName
     mainClass = 'com.appdynamics.ace.agents.derrivedMetrics.DerrivedMetricsAgent'
-    classpath = "${AgentName}.jar"    // be carefull this is a hardcoded Name !!!
+    classpath = "${project.AgentName}.jar"    // be carefull this is a hardcoded Name !!!
 }
 
 
 jar {
-    archiveName="${AgentName}.jar"
+    archiveName="${project.AgentName}.jar"
 }
 
 
 task packageAgent (type: Zip) {
-    archiveName = AgentPackageName+".zip"
+    archiveName = project.AgentPackageName+".zip"
     into(AgentName+"/lib") {
         from(project.configurations.agentRuntime)
     }

@@ -1,0 +1,34 @@
+
+connect {
+     controller "hostname:8090"
+     account "customer1"
+     user "smarx"
+     password "lld"
+ }
+
+
+ /*  prototype Calculation
+
+ calculate """ 'Calls per Minute' ,'Errors per Minute'
+                        from 'Overall Application Performance'
+                        on Application 'ECommerce'
+                        for 1 minutes 5 minutes ago
+           """ {
+
+            reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
+
+           }
+
+
+calculate """ 'Calls per Minute' ,'Errors per Minute'
+                        from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT'
+                        on Application 'ECommerce'
+                        for 1 minutes 5 minutes ago
+           """ {
+
+                // Will iterate for each "metric Path" basically this will be executed multiple times
+                reportMetric("BTSpecificErrorRate|${Tier}|${BT}|errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
+
+           }
+
+ */
