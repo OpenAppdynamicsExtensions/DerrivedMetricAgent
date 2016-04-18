@@ -1,5 +1,11 @@
 package com.appdynamics.ace.agents.derrivedMetrics
 
+import de.appdynamics.ace.metric.query.data.Column
+import de.appdynamics.ace.metric.query.data.DataMap
+import de.appdynamics.ace.metric.query.data.DataObject
+import de.appdynamics.ace.metric.query.data.DataRow
+import de.appdynamics.ace.metric.query.parser.CompiledRestMetricQuery
+import de.appdynamics.ace.metric.query.parser.MetricQuery
 import de.appdynamics.ace.metric.query.rest.ControllerRestAccess
 import org.apache.log4j.Logger
 
@@ -18,6 +24,30 @@ class DSLDelegate extends Script  {
         _connection = conn.connect();
 
         getLogger().info("Connected :"+_connection.dump());
+    }
+
+
+    def calculate (String query, Closure calculation) {
+        MetricQuery mq = new MetricQuery();
+
+        CompiledRestMetricQuery erg = mq.parse( query);
+        DataMap map = erg.execute(_connection);
+        Column pCol = map.getHeader().find(){Column c->
+            return c.name == "path";
+        }
+
+        Set<String> paths = map.getOrderedRows().collect { DataRow row ->
+            DataObject data = row.findData(pCol);
+            return data.textValue;
+        } as Set;
+
+        getLogger().info("Path:"+paths)
+
+
+        // iterate on all Paths
+
+
+
     }
 
 

@@ -1,27 +1,48 @@
 
 connect {
-     controller "hostname:8090"
+     controller "controller2.demo.appdynamics.com:80"
      account "customer1"
-     user "smarx"
-     password "lld"
+     user "demouser"
+     password "Ghed7ped0geN"
  }
 
 
- /*  prototype Calculation
-
- calculate """ 'Calls per Minute' ,'Errors per Minute'
+calculate (""" export  'Calls per Minute' ,'Errors per Minute' ,'Average Response Time (ms)'
                         from 'Overall Application Performance'
                         on Application 'ECommerce'
-                        for 1 minutes 5 minutes ago
-           """ {
+                        for 15 minutes 5 minutes ago
+           """, {
 
-            reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
+            //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
 
-           }
+           })
 
+/*
+calculate (""" export 'Calls per Minute' ,'Errors per Minute'
+                         from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT
+                         on Application 'ECommerce'
+                         for 1 minutes 5 minutes ago
+           """, {
+            // query ().avg("")
+            //reportMetric("BTSpecificErrorRate|${Tier}|${BT}|errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
 
+           })
+
+           */
+
+/*  prototype Calculation
+
+ calculate (""" export 'Calls per Minute' ,'Errors per Minute'
+                         from 'Overall Application Performance'
+                         on Application 'ECommerce'
+                         for 1 minutes 5 minutes ago
+            """, {
+
+             //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
+
+            })
 calculate """ 'Calls per Minute' ,'Errors per Minute'
-                        from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT'
+                        from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT
                         on Application 'ECommerce'
                         for 1 minutes 5 minutes ago
            """ {

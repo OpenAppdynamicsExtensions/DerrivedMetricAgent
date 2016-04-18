@@ -48,7 +48,7 @@ dependencies {
     compile "com.appdynamics:machineagent:4.1.0"
 
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
-    compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.4.7'
+    compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.1'
 
     agentBinary "com.appdynamics:MachineAgent:4.1.0@zip"
 

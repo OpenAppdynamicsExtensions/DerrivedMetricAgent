@@ -22,11 +22,12 @@ public class TestCalculations {
 
             ConsoleAppender console = new ConsoleAppender(); //create appender
             //configure the appender
-            String PATTERN = "%d [%C{1}] %m%n";
+            String PATTERN = "%d [%p:%C{1}] %m%n";
             console.setLayout(new PatternLayout(PATTERN));
-            console.setThreshold(Level.DEBUG);
+            console.setThreshold(Level.INFO);
             console.activateOptions();
             //add appender to any Logger (here is root)
+            //Logger.getLogger("com.appdynamics").addAppender(console);
             Logger.getRootLogger().addAppender(console);
 
 
