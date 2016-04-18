@@ -41,7 +41,23 @@ class DSLDelegate extends Script  {
             return data.textValue;
         } as Set;
 
-        getLogger().info("Path:"+paths)
+        List<DataMap> maps
+        maps = map.splitBy(pCol) ;
+        maps.each { splitMap ->
+
+            // maybe this needs to become delegate
+            // NEED ATTENTION, Goal is to r4edelegate to calculations ....!!!
+            //
+            cal = new  CalculationDelegate(map,splitMap);
+
+            def code = calculation.rehydrate(cal,cal,cal);
+            code.resolveStrategy = Closure.DELEGATE_FIRST;
+            getLogger().info("Before execute")
+            code();
+
+            getLogger().info("After execute")
+        }
+
 
 
         // iterate on all Paths

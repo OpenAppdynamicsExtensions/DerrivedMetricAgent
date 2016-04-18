@@ -7,13 +7,19 @@ connect {
  }
 
 
+
 calculate (""" export  'Calls per Minute' ,'Errors per Minute' ,'Average Response Time (ms)'
                         from 'Overall Application Performance'
                         on Application 'ECommerce'
                         for 15 minutes 5 minutes ago
            """, {
 
+
+
             //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
+            dumpData();
+
+
 
            })
 
