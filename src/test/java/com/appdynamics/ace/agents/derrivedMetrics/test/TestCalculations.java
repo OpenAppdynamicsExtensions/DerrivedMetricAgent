@@ -22,7 +22,7 @@ public class TestCalculations {
 
             ConsoleAppender console = new ConsoleAppender(); //create appender
             //configure the appender
-            String PATTERN = "%d [%p:%C{1}] %m%n";
+            String PATTERN = "%d [%p:%c] %m%n";
             console.setLayout(new PatternLayout(PATTERN));
             console.setThreshold(Level.INFO);
             console.activateOptions();
