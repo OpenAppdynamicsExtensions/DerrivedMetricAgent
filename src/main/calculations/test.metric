@@ -11,19 +11,26 @@ connect {
 calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)'
                         from 'Overall Application Performance'
                         on Application 'ECommerce'
-                        for 15 minutes 5 minutes ago
+                        for 1 minutes 5 minutes ago
            """, {
 
 
 
             //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
-            //dumpData();
-            println avg('calls');
-            println min('calls');
-            println max('calls');
-            println count('calls');
-            println sum('calls');
-
+            dumpData();
+            // println avg('calls');
+            // println min('calls');
+            // println max('calls');
+            // println sum('calls');
+            // println count('calls');
+            println values('calls');
+            println first('calls');
+            println last('calls');
+            println delta('calls');
+            println percentage('calls (sum)', 30);
+            println startTime();
+            println endTime();
+            println duration();
            })
 
 /*
