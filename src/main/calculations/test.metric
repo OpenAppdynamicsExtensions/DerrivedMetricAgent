@@ -18,8 +18,11 @@ calculate (""" export  'Calls per Minute' ,'Errors per Minute' ,'Average Respons
 
             //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
             dumpData();
-
-
+            avg('Calls per Minute');
+            min('Calls per Minute');
+            max('Calls per Minute');
+            count('Calls per Minute');
+            sum('Calls per Minute');
 
            })
 

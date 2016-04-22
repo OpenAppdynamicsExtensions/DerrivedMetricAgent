@@ -1,6 +1,8 @@
 package com.appdynamics.ace.agents.derrivedMetrics
 
 import de.appdynamics.ace.metric.query.data.DataMap
+import de.appdynamics.ace.metric.query.data.ValueColumn
+import de.appdynamics.ace.metric.query.data.ValueDataObject
 import org.apache.log4j.Logger
 
 /**
@@ -20,10 +22,51 @@ class CalculationDelegate extends Script {
         this._allData = allData
     }
 
-
     public void dumpData() {
-        println "kkk"
+        // getLogger().info("dump data for path starts");
         getLogger().info("Data:\n"+_filteredData.dumpData());
+        // getLogger().info("dump data for path ends");
+    }
+
+    def avg(String metricName) {
+        def values = this.getValues(metricName);
+        getLogger().info("Avg is " + values.sum()/values.size());
+        return values.sum()/values.size();
+    }
+
+    def min(String metricName) {
+        def values = this.getValues(metricName);
+        getLogger().info("Min is " + values.min());
+    }
+
+    def max(String metricName) {
+        def values = this.getValues(metricName);
+        getLogger().info("Max is " + values.max());
+    }
+
+    def sum(String metricName) {
+        def values = this.getValues(metricName);
+        getLogger().info("Sum is " + values.sum());
+    }
+
+    def count(String metricName) {
+        def values = this.getValues(metricName);
+        getLogger().info("Count is " + values.size());
+    }
+
+    def getValues(String metricName) {
+        def values = [];
+        ValueColumn metricColumn = _filteredData.findOrCreateValueColumn(metricName);
+        ArrayList columnList = _filteredData._columns.getColumnsList();
+        _filteredData.getOrderedRows().each { row ->
+            columnList.each { column ->
+                if(column.equals(metricColumn)) {
+                    ValueDataObject data = row.findData(column);
+                    values << data.getValue();
+                }
+            }
+        }
+        return values;
     }
 
 

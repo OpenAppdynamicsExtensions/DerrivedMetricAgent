@@ -52,10 +52,9 @@ class DSLDelegate extends Script  {
 
             def code = calculation.rehydrate(cal,cal,cal);
             code.resolveStrategy = Closure.DELEGATE_FIRST;
-            getLogger().info("Before execute")
+            // getLogger().info("Before execute")
             code();
-
-            getLogger().info("After execute")
+            // getLogger().info("After execute")
         }
 
 
