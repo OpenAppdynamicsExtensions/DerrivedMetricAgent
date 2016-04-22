@@ -11,7 +11,7 @@ connect {
 calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)'
                         from 'Overall Application Performance'
                         on Application 'ECommerce'
-                        for 1 minutes 5 minutes ago
+                        for 2 minutes 5 minutes ago
            """, {
 
 
@@ -33,6 +33,24 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
             println endTime();
             println duration();
            })
+
+
+
+calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)' as resp
+                       from 'Overall Application Performance'
+                       on Application 'ECommerce'
+                       for 5 minutes 5 minutes ago
+          """, {
+
+
+
+
+            def f = values('time','calls','resp');
+
+            println f.time
+            println f.collect {row -> "$row.time :>>> $row.resp"}.join("\n")
+
+          })
 
 /*
 calculate (""" export 'Calls per Minute' ,'Errors per Minute'

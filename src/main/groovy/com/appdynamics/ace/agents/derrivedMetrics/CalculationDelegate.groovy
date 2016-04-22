@@ -1,10 +1,12 @@
 package com.appdynamics.ace.agents.derrivedMetrics
 
 import de.appdynamics.ace.metric.query.data.DataMap
+import de.appdynamics.ace.metric.query.data.DataRow
 import de.appdynamics.ace.metric.query.data.ValueColumn
 import de.appdynamics.ace.metric.query.data.ValueDataObject
 import de.appdynamics.ace.metric.query.data.TimestampColumn
 import de.appdynamics.ace.metric.query.data.TimestampDataObject
+import de.appdynamics.ace.metric.query.rest.MetricData
 import org.apache.log4j.Logger
 
 /**
@@ -89,7 +91,29 @@ class CalculationDelegate extends Script {
         return values;
     }
 
+    def values(String ... metricNames) {
 
+        def cols = metricNames.collect { name ->
+            assertColumnExist(name)
+            _filteredData.getHeaderColumn(name);
+        }
+
+        //assertions hapened in line, set list of rows
+
+        def result = _filteredData.getOrderedRows().collect() { DataRow row ->
+            cols.collectEntries() { col ->
+                def val;
+                def d = row.getData(col);
+                val = d.getTextValue();
+                if (d instanceof ValueDataObject) val = (d as ValueDataObject).getValue();
+                if (d instanceof  TimestampDataObject) val = (d as TimestampDataObject).getTimestampValue();
+                [(col.getName()): val]
+            }
+        }
+
+
+
+    }
 
 
 
