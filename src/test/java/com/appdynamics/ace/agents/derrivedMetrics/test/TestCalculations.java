@@ -2,6 +2,7 @@ package com.appdynamics.ace.agents.derrivedMetrics.test;
 
 import com.appdynamics.ace.agents.derrivedMetrics.CalculationEngine;
 import com.appdynamics.ace.agents.derrivedMetrics.CalculationException;
+import com.appdynamics.ace.agents.derrivedMetrics.util.KeyStoreWrapper;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -16,7 +17,13 @@ public class TestCalculations {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        KeyStoreWrapper ksUtil = new KeyStoreWrapper("./metrics.ks", "Nigeheim");
+        ksUtil.setPasswd("klkl","opop");
+        System.out.println("PASSWORD :"+ksUtil.getPasswd("klkl"));
+        ksUtil.store();
+
         CalculationEngine engine = new CalculationEngine(new File("./src/main/calculations"));
         try {
 
@@ -26,8 +33,7 @@ public class TestCalculations {
             console.setLayout(new PatternLayout(PATTERN));
             console.setThreshold(Level.INFO);
             console.activateOptions();
-            //add appender to any Logger (here is root)
-            //Logger.getLogger("com.appdynamics").addAppender(console);
+
             Logger.getRootLogger().addAppender(console);
 
 
