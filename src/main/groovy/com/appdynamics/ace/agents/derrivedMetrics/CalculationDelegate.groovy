@@ -199,6 +199,7 @@ class CalculationDelegate extends Script {
 
     def methodMissing(String name, args) {
         def argList = args.collect { return it}
-        getLogger().error("Missing Method : $name ( ${argList} ) ");
+        getLogger().error("Missing Method : $name ( ${argList.join(',')} ) ");
+        throw new CalculationException("Missing Method : $name  ")
     }
 }

@@ -24,6 +24,7 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
             // println sum('calls');
             // println count('calls');
             println values('calls');
+            println values('calls','Average Response Time (ms)');
             println first('calls');
             println last('calls');
             println delta('calls');
