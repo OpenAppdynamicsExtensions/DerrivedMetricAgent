@@ -14,6 +14,8 @@ class CalculationDelegate extends Script {
     private DataMap _filteredData
     Logger _logger;
 
+    private def _reportedMetrics = [];
+
 
 
     public CalculationDelegate (DataMap allData, DataMap filteredData) {
@@ -35,8 +37,14 @@ class CalculationDelegate extends Script {
     }
 
     def min(String metricName) {
-        def values = this.getValues(metricName);
+        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+
+        def values ;
+        if (hasColumn(metricName+" (min)")) values = this.getValues(metricName+" (min)");
+        else values = this.getValues(metricName);
+
         getLogger().debug("Min is " + values.min());
+        return values.min();
     }
 
     def max(String metricName) {
@@ -54,19 +62,17 @@ class CalculationDelegate extends Script {
         getLogger().debug("Count is " + values.size());
     }
 
-    def getValues(String metricName) {
+    boolean hasColumn(String metricName) {
+        return _filteredData.getHeaderColumn(metricName) != null;
+    }
+
+    def getValues(String metricName) throws CalculationException {
         def values = [];
-        ValueColumn metricColumn = _filteredData.findOrCreateValueColumn(metricName);
-        ArrayList columnList = _filteredData._columns.getColumnsList();
-        _filteredData.getOrderedRows().each { row ->
-            columnList.each { column ->
-                if(column.equals(metricColumn)) {
-                    ValueDataObject data = row.findData(column);
-                    values << data.getValue();
-                }
-            }
-        }
-        return values;
+        ValueColumn metricColumn = _filteredData.getHeaderColumn(metricName);
+
+        if (metricColumn == null) throw new CalculationException("Column $metricName not found!")
+
+        return _filteredData.getValues(metricColumn).collect {ValueDataObject it-> it.getValue();};
     }
 
 

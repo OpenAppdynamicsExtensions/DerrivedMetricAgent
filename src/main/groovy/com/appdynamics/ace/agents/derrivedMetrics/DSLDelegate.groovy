@@ -52,9 +52,12 @@ class DSLDelegate extends Script  {
 
             def code = calculation.rehydrate(cal,cal,cal);
             code.resolveStrategy = Closure.DELEGATE_FIRST;
-            // getLogger().info("Before execute")
-            code();
-            // getLogger().info("After execute")
+            try {
+                code();
+            } catch (CalculationException e) {
+                getLogger().error("Error during calculation : $query ",e);
+            }
+
         }
 
 
