@@ -13,6 +13,11 @@ apply plugin: 'groovy'
 //apply plugin: 'idea'
 //apply plugin: 'maven'
 apply from: 'base.gradle'
+apply plugin: "application"
+
+applicationName = 'DerrivedMetrics'
+mainClassName = "com.appdynamics.ace.agents.derrivedMetrics.cli.Main"
+applicationDefaultJvmArgs = ["-Xms50m","-Xmx50m"]
 
 
 version='1.0'
@@ -55,6 +60,9 @@ dependencies {
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
     agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.4.7'
 
+//    testCompile 'junit:junit:4.12'
+    compile 'com.appdynamics.ace.cli:CommandFramework:1.4'
+
 
 }
 
@@ -87,7 +95,6 @@ task packageAgent (type: Zip) {
 
 }
 
-tasks.assemble.dependsOn(packageAgent)
 
 
 
@@ -109,4 +116,9 @@ task installSandbox() {
 }
 
 tasks.installSandbox.dependsOn(packageAgent)
+
+
 tasks.packageAgent.dependsOn(jar)
+
+tasks.assemble.dependsOn(packageAgent)
+tasks.assemble.dependsOn(distZip)

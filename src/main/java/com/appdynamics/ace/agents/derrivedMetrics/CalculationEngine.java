@@ -23,12 +23,15 @@ public class CalculationEngine {
     private File _path;
 
     public CalculationEngine(File path) {
-
-
+          this();
         _path = path;
 
+
+    }
+
+    public CalculationEngine() {
         _compilerConfig = new CompilerConfiguration();
-        _compilerConfig.setScriptBaseClass(DSLDelegate.class.getName());
+        _compilerConfig.setScriptBaseClass("com.appdynamics.ace.agents.derrivedMetrics.DSLDelegate"  );
 
         _binder = new Binding();
         _shell = new GroovyShell(this.getClass().getClassLoader(),_binder,_compilerConfig);
