@@ -31,14 +31,15 @@ class CalculationDelegate extends Script {
     }
 
     def avg(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
         def values = this.getValues(metricName);
         getLogger().debug("Avg is " + values.sum()/values.size());
         return values.sum()/values.size();
     }
 
     def min(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values;
         if (hasColumn(metricName+" (min)"))
             values = this.getValues(metricName+" (min)");
@@ -49,7 +50,8 @@ class CalculationDelegate extends Script {
     }
 
     def max(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values;
         if (hasColumn(metricName+" (max)"))
             values = this.getValues(metricName+" (max)");
@@ -60,7 +62,8 @@ class CalculationDelegate extends Script {
     }
 
     def sum(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values;
         if (hasColumn(metricName+" (sum)"))
             values = this.getValues(metricName+" (sum)");
@@ -71,35 +74,45 @@ class CalculationDelegate extends Script {
     }
 
     def count(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values = this.getValues(metricName);
         getLogger().debug("Count is " + values.size());
         return values.size();
     }
 
     def values(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values = this.getValues(metricName);
         getLogger().debug("Values are " + values);
         return values;
     }
 
+
+
+
+
+
     def first(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values = this.getValues(metricName);
         getLogger().debug("First value is " + values.first());
         return values.first();
     }
 
     def last(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values = this.getValues(metricName);
         getLogger().debug("Last value is " + values.last());
         return values.last();
     }
 
     def delta(String metricName) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values = this.getValues(metricName);
         if(values.size()>1) {
             getLogger().debug("Last value is " + values.last() + ", second last value is " + values[-2] + ". Hence the delta is " + values.last() - values[-2]);
@@ -111,7 +124,8 @@ class CalculationDelegate extends Script {
     }
 
     def percentage(String metricName, double percent) {
-        if(!hasColumn(metricName)) throw new CalculationException("Column $metricName not found!");
+        assertColumnExist(metricName);
+
         def values = this.getValues(metricName);
         def baseValue;
         if(metricName.endsWith("(min)"))
@@ -201,5 +215,9 @@ class CalculationDelegate extends Script {
         def argList = args.collect { return it}
         getLogger().error("Missing Method : $name ( ${argList.join(',')} ) ");
         throw new CalculationException("Missing Method : $name  ")
+    }
+
+    private void assertColumnExist(String name) {
+        if (!hasColumn(name)) throw new CalculationException("Column $metricName not found!");
     }
 }
