@@ -89,4 +89,10 @@ class CalculationDelegate extends Script {
     Object run() {
         return super.run();
     }
+
+    def methodMissing(String name, args) {
+
+        def argList = args.collect { return it}
+        getLogger().error("Missing Method : $name ( ${argList} ) ");
+    }
 }
