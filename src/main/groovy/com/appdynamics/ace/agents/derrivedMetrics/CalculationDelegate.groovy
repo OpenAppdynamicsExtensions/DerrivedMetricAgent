@@ -24,34 +24,34 @@ class CalculationDelegate extends Script {
 
     public void dumpData() {
         // getLogger().info("dump data for path starts");
-        getLogger().info("Data:\n"+_filteredData.dumpData());
+        getLogger().debug("Data:\n"+_filteredData.dumpData());
         // getLogger().info("dump data for path ends");
     }
 
     def avg(String metricName) {
         def values = this.getValues(metricName);
-        getLogger().info("Avg is " + values.sum()/values.size());
+        getLogger().debug("Avg is " + values.sum()/values.size());
         return values.sum()/values.size();
     }
 
     def min(String metricName) {
         def values = this.getValues(metricName);
-        getLogger().info("Min is " + values.min());
+        getLogger().debug("Min is " + values.min());
     }
 
     def max(String metricName) {
         def values = this.getValues(metricName);
-        getLogger().info("Max is " + values.max());
+        getLogger().debug("Max is " + values.max());
     }
 
     def sum(String metricName) {
         def values = this.getValues(metricName);
-        getLogger().info("Sum is " + values.sum());
+        getLogger().debug("Sum is " + values.sum());
     }
 
     def count(String metricName) {
         def values = this.getValues(metricName);
-        getLogger().info("Count is " + values.size());
+        getLogger().debug("Count is " + values.size());
     }
 
     def getValues(String metricName) {
