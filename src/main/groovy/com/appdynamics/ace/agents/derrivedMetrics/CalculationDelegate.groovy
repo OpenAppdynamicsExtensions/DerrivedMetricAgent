@@ -105,7 +105,7 @@ class CalculationDelegate extends Script {
             getLogger().debug("Last value is " + values.last() + ", second last value is " + values[-2] + ". Hence the delta is " + values.last() - values[-2]);
             return values.last() - values[-2];
         } else {
-            getLogger().debug("There are less than two values to derive a delta from.");
+           throw new CalculationException("There are less than two values to derive a delta from.");
             return null;
         }
     }
@@ -163,7 +163,12 @@ class CalculationDelegate extends Script {
         };
         */
         return values;
+
+
+
     }
+
+
 
     def getValueTimestamps() throws CalculationException {
         def timestamps = [];
