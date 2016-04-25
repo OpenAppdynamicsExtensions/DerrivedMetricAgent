@@ -11,7 +11,7 @@ connect {
 calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)'
                         from 'Overall Application Performance'
                         on Application 'ECommerce'
-                        for 2 minutes 5 minutes ago
+                        for 30 minutes 5 hours ago
            """, {
 
 
@@ -23,19 +23,20 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
             // println max('calls');
             // println sum('calls');
             // println count('calls');
-            println values('calls');
-            println values('calls','Average Response Time (ms)');
-            println first('calls');
-            println last('calls');
+            //println values('calls');
+            //println values('calls','Average Response Time (ms)');
+            //println first('calls');
+            //println last('calls');
             println delta('calls');
-            println percentage('calls (sum)', 30);
-            println startTime();
-            println endTime();
+            //println percentage('calls (sum)', 30);
+            //println startTime();
+            //println endTime();
             println duration();
+            println deltaMin('calls');
            })
 
 
-
+/*
 calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)' as resp
                        from 'Overall Application Performance'
                        on Application 'ECommerce'
@@ -51,7 +52,7 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
             println f.collect {row -> "$row.time :>>> $row.resp"}.join("\n")
 
           })
-
+*/
 /*
 calculate (""" export 'Calls per Minute' ,'Errors per Minute'
                          from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT

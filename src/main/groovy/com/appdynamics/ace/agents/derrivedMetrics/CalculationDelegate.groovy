@@ -110,13 +110,7 @@ class CalculationDelegate extends Script {
                 [(col.getName()): val]
             }
         }
-
-
-
     }
-
-
-
 
     def first(String metricName) {
         assertColumnExist(metricName);
@@ -143,6 +137,26 @@ class CalculationDelegate extends Script {
             return values.last() - values[-2];
         } else {
            throw new CalculationException("There are less than two values to derive a delta from.");
+            return null;
+        }
+    }
+
+    def deltaMin(String metricName) {
+        assertColumnExist(metricName);
+
+        def timestampValues = this.getValueTimestamps();
+        def values = this.getValues(metricName);
+        if(timestampValues.size()>1) {
+            def timestampDelta = timestampValues.last().getTime() - timestampValues[-2].getTime();
+            if(timestampDelta == 60000) {
+                return values.last() - values[-2];
+            } else if(timestampDelta > 60000){
+                return (values.last() - values[-2]) / (timestampDelta / 60000);
+            } else {
+                // the timestamp delta should actually never be less than 1 minute since this is the finest granularity where data is collected.
+            }
+        } else {
+            throw new CalculationException("There are less than two values to derive a delta from.");
             return null;
         }
     }
@@ -201,12 +215,7 @@ class CalculationDelegate extends Script {
         };
         */
         return values;
-
-
-
     }
-
-
 
     def getValueTimestamps() throws CalculationException {
         def timestamps = [];
