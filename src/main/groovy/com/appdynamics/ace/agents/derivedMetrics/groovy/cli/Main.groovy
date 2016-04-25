@@ -1,7 +1,8 @@
-package com.appdynamics.ace.agents.derivedMetrics.cli
+package com.appdynamics.ace.agents.derivedMetrics.groovy.cli
 
-import com.appdynamics.ace.agents.derivedMetrics.CalculationEngine
-import com.appdynamics.ace.agents.derivedMetrics.cli.api.CommandWrapper
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.CalculationEngine
+import com.appdynamics.ace.agents.derivedMetrics.groovy.cli.api.CommandWrapper
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.MetricValueContainer
 import com.appdynamics.ace.util.cli.api.api.CommandlineExecution
 import org.apache.log4j.ConsoleAppender
 import org.apache.log4j.Level
@@ -50,7 +51,12 @@ class Main {
                     scripts.each(){
                         script ->
                             File f = new File(script);
-                            engine.execute(f);
+                            List<MetricValueContainer> results
+                            results = engine.execute(f);
+                            results.eachWithIndex { MetricValueContainer r,i->
+                                println "$i : ${r.valueString}"
+                            }
+
 
                     }
 

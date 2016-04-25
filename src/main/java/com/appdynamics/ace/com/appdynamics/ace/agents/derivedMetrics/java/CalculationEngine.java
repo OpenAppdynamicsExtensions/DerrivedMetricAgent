@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derivedMetrics;
+package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -31,7 +31,7 @@ public class CalculationEngine {
 
     public CalculationEngine() {
         _compilerConfig = new CompilerConfiguration();
-        _compilerConfig.setScriptBaseClass("com.appdynamics.ace.agents.derivedMetrics.DSLDelegate"  );
+        _compilerConfig.setScriptBaseClass("com.appdynamics.ace.agents.derivedMetrics.groovy.DSLDelegate"  );
 
         _binder = new Binding();
         _shell = new GroovyShell(this.getClass().getClassLoader(),_binder,_compilerConfig);
@@ -53,7 +53,7 @@ public class CalculationEngine {
     }
 
     public List<MetricValueContainer> executeAll() throws CalculationException {
-        List<MetricValueContainer> metricResults = new ArrayList<>();
+        List<MetricValueContainer> metricResults = new ArrayList<MetricValueContainer>();
 
         List<File> calcIterator = iterateFiles();
         for (File calculation : calcIterator) {

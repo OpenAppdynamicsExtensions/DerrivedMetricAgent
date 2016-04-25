@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derivedMetrics.util;
+package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.util;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;

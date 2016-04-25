@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derivedMetrics.cli.api
+package com.appdynamics.ace.agents.derivedMetrics.groovy.cli.api
 
 import com.appdynamics.ace.util.cli.api.api.AbstractCommand
 import com.appdynamics.ace.util.cli.api.api.CommandException

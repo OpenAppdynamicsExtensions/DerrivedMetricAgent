@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derivedMetrics;
+package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java;
 
 
 import com.singularity.ee.agent.systemagent.api.AManagedMonitor;
@@ -43,6 +43,9 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
     @Override
     public TaskOutput execute(Map<String, String> map, TaskExecutionContext taskExecutionContext) throws TaskExecutionException {
 
+        for (Map.Entry e : map.entrySet()) {
+            logger.error(String.format("Argument %s --> %s",e.getKey(),e.getValue()));
+        }
         File calcs = new File(taskExecutionContext.getTaskDir(),"calculations");
 
         // Exit if Directory doesn't exists OR not a Directory

@@ -16,7 +16,7 @@ apply from: 'base.gradle'
 apply plugin: "application"
 
 applicationName = 'DerivedMetrics'
-mainClassName = "com.appdynamics.ace.agents.derivedMetrics.cli.Main"
+mainClassName = "com.appdynamics.ace.agents.derivedMetrics.groovy.cli.Main"
 applicationDefaultJvmArgs = ["-Xms50m","-Xmx50m"]
 
 

@@ -1,5 +1,7 @@
-package com.appdynamics.ace.agents.derivedMetrics
+package com.appdynamics.ace.agents.derivedMetrics.groovy
 
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.CalculationException
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.MetricValueContainer
 import de.appdynamics.ace.metric.query.data.Column
 import de.appdynamics.ace.metric.query.data.DataMap
 import de.appdynamics.ace.metric.query.data.DataObject
@@ -7,7 +9,6 @@ import de.appdynamics.ace.metric.query.data.DataRow
 import de.appdynamics.ace.metric.query.parser.CompiledRestMetricQuery
 import de.appdynamics.ace.metric.query.parser.MetricQuery
 import de.appdynamics.ace.metric.query.rest.ControllerRestAccess
-import de.appdynamics.ace.metric.query.rest.MetricData
 import org.apache.log4j.Logger
 
 
