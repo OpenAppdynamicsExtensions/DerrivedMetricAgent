@@ -9,7 +9,7 @@ The following steps describe the process of installing the DerivedMetric agent
 1. Download the file 'DerrivedMetricsAgent.zip' from this GitHub page
 2. Install a machine agent on a host that can communicate with the AppDynamics Controller or install on the Controller host itself.
 3. Unzip the file 'DerrivedMetricsAgent.zip' into `<machine_agent>/monitors/`.
-4. Navigate into the calculations directory `<machine_agent>/monitors/DerrivedMetricAgent/calculations` and add at least one calculation  file (see Configuration for more details)
+4. Navigate into the calculations directory `<machine_agent>/monitors/DerrivedMetricAgent/calculations/scripts` and add at least one calculation  file (see Configuration for more details)
 5. Start the machine agent and verify by using the Metric Browser in the Controller UI that the custom metrics are getting ingested properly.
 
 ## Configuration
@@ -53,4 +53,8 @@ avg('calls');
 delta('calls');
 ```
 
-Finally the result of the aggregation functions can re-ingested into the Controller as a new (custom) metric. This would be done through an instruction also in the `calculate` block:
+Finally the result of the aggregation functions can be re-ingested into the Controller as a new (custom) metric. This would be done through an instruction also in the `calculate` block as shown below:
+
+```
+reportMetric("errorRate",(avg('calls')/avg('Errors per Minute'))*100 )
+``
