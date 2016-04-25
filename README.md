@@ -57,4 +57,4 @@ Finally the result of the aggregation functions can be re-ingested into the Cont
 
 ```
 reportMetric("errorRate",(avg('calls')/avg('Errors per Minute'))*100 )
-``
+```
