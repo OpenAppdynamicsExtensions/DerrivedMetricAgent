@@ -44,6 +44,9 @@ class GenerateMonitorConf extends DefaultTask {
     String classpath = ""
 
     @Input
+    def taskArguments = [:]
+
+    @Input
     boolean continuous = false;
     @OutputFile
     File output  = "./build/conf/monitor.xml" as File
@@ -66,7 +69,11 @@ class GenerateMonitorConf extends DefaultTask {
                     xml.description(agentDescription)
                     xml.type('java')
                     xml.'execution-timeout-in-secs'(timeout)
-                    xml.'task-arguments'()
+                    xml.'task-arguments'() {
+                          taskArguments.each { k,v ->
+                                xml.argument('name': k, 'default-value': v, 'is-required': true);
+                            }
+                    }
                     xml.'java-task'(){
                         xml.classpath("./lib/:"+classpath)
                         xml.'load-jars-in-classpath-dirs'("true")

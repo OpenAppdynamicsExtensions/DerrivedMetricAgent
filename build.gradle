@@ -68,6 +68,11 @@ dependencies {
 
 
 generateMonitorXML {
+    taskArguments = [
+            'scriptDirectory': './scripts/',
+            'passwordKS':'./metrics.ks'
+    ]
+
     agentDescription = "TestAgent"
     timeout = 120
     agentName=AgentName
@@ -83,6 +88,9 @@ jar {
 
 task packageAgent (type: Zip) {
     archiveName = project.AgentPackageName+".zip"
+
+
+
     into(AgentName+"/lib") {
         from(project.configurations.agentRuntime)
     }
