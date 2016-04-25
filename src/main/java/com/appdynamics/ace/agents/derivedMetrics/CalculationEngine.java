@@ -37,11 +37,13 @@ public class CalculationEngine {
         _shell = new GroovyShell(this.getClass().getClassLoader(),_binder,_compilerConfig);
     }
 
-    public void execute(File calculation) throws CalculationException{
+    public List<MetricValueContainer> execute(File calculation) throws CalculationException{
 
         try {
             Script script = _shell.parse(calculation);
             Object result = script.run();
+            List<MetricValueContainer> metricResult = (List<MetricValueContainer>) result;
+            return metricResult;
 
         } catch (IOException e) {
             throw new CalculationException("IO Error while compiling",e);
@@ -50,12 +52,18 @@ public class CalculationEngine {
 
     }
 
-    public void executeAll() throws CalculationException {
+    public List<MetricValueContainer> executeAll() throws CalculationException {
+        List<MetricValueContainer> metricResults = new ArrayList<>();
+
         List<File> calcIterator = iterateFiles();
         for (File calculation : calcIterator) {
             logger.info("Execute Calculation :"+calculation);
-            this.execute(calculation);
+            List<MetricValueContainer> r = this.execute(calculation);
+            metricResults.addAll(r);
+
         }
+
+        return metricResults;
 
     }
 

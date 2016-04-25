@@ -7,6 +7,7 @@ import de.appdynamics.ace.metric.query.data.DataRow
 import de.appdynamics.ace.metric.query.parser.CompiledRestMetricQuery
 import de.appdynamics.ace.metric.query.parser.MetricQuery
 import de.appdynamics.ace.metric.query.rest.ControllerRestAccess
+import de.appdynamics.ace.metric.query.rest.MetricData
 import org.apache.log4j.Logger
 
 
@@ -14,6 +15,9 @@ import org.apache.log4j.Logger
 class DSLDelegate extends Script  {
     ControllerRestAccess _connection;
     Logger _logger;
+
+
+    public List<MetricValueContainer> _allValues = [];
 
 
     def connect(Closure cl) {
@@ -27,7 +31,7 @@ class DSLDelegate extends Script  {
     }
 
 
-    def calculate (String query, Closure calculation) {
+    List<MetricValueContainer> calculate (String query, Closure calculation) {
         MetricQuery mq = new MetricQuery();
 
         CompiledRestMetricQuery erg = mq.parse( query);
@@ -42,24 +46,31 @@ class DSLDelegate extends Script  {
         } as Set;
 
         List<DataMap> maps
+        List<MetricValueContainer> _values = []
         maps = map.splitBy(pCol) ;
         maps.each { splitMap ->
 
             // maybe this needs to become delegate
             // NEED ATTENTION, Goal is to r4edelegate to calculations ....!!!
             //
-            cal = new  CalculationDelegate(map,splitMap);
+            CalculationDelegate cal = new  CalculationDelegate(map,splitMap);
 
             def code = calculation.rehydrate(cal,cal,cal);
             code.resolveStrategy = Closure.DELEGATE_FIRST;
             try {
                 code();
+                def v = cal._metricValues.collect(){k, e -> e}.flatten();
+                _values.addAll(v);
+
             } catch (CalculationException e) {
                 getLogger().error("Error during calculation : $query ",e);
             }
 
         }
 
+
+        _allValues += _values;
+        return _values;
 
 
         // iterate on all Paths
@@ -131,7 +142,8 @@ class DSLDelegate extends Script  {
 
     @Override
     Object run() {
-        return super.run();
+         super.run();
+        return _allValues;
     }
 
 

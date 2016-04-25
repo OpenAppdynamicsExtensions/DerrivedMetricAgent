@@ -27,8 +27,8 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
             //println values('calls','Average Response Time (ms)');
             //println first('calls');
             //println last('calls');
-            println delta('calls');
-            //println percentage('calls (sum)', 30);
+            reportMetric("calls|delta", delta('calls'));
+            reportMetric("calls|sum",sum('calls'));
             //println startTime();
             println endTime();
             println duration();

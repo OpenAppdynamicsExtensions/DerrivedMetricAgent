@@ -2,6 +2,7 @@ package com.appdynamics.ace.agents.derivedMetrics.test;
 
 import com.appdynamics.ace.agents.derivedMetrics.CalculationEngine;
 import com.appdynamics.ace.agents.derivedMetrics.CalculationException;
+import com.appdynamics.ace.agents.derivedMetrics.MetricValueContainer;
 import com.appdynamics.ace.agents.derivedMetrics.util.KeyStoreWrapper;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by stefan.marx on 14.04.16.
@@ -37,7 +39,11 @@ public class TestCalculations {
             Logger.getRootLogger().addAppender(console);
 
 
-            engine.executeAll();
+            List<MetricValueContainer> result = engine.executeAll();
+            System.out.println(" RESULTS:");
+            for (MetricValueContainer c : result) {
+                System.out.println(c.toString());
+            }
 
 
         } catch (CalculationException e) {
