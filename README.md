@@ -1,1 +1,0 @@
-# DerrivedMetricAgent Quick Starter Guide
