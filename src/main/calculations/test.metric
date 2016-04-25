@@ -30,7 +30,7 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
             println delta('calls');
             //println percentage('calls (sum)', 30);
             //println startTime();
-            //println endTime();
+            println endTime();
             println duration();
             println deltaMin('calls');
            })
