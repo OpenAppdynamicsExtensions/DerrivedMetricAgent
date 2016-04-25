@@ -52,3 +52,5 @@ Within the `calculate` block one or more aggregation functions can be specified.
 avg('calls');
 delta('calls');
 ```
+
+Finally the result of the aggregation functions can re-ingested into the Controller as a new (custom) metric. This would be done through an instruction also in the `calculate` block:
