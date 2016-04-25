@@ -45,6 +45,7 @@ configurations.compileOnly.transitive=false
 configurations {
     agentRuntime
     agentBinary
+    groovyDoc
 }
 
 
@@ -63,7 +64,8 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.4'
 
-
+    groovyDoc 'org.codehaus.groovy:groovy-groovydoc:2.3.3'
+    groovyDoc 'org.codehaus.groovy:groovy-ant:2.3.3'
 }
 
 
@@ -83,6 +85,10 @@ generateMonitorXML {
 
 jar {
     archiveName="${project.AgentName}.jar"
+}
+
+groovydoc {
+    groovyClasspath = configurations.groovyDoc
 }
 
 
