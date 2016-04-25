@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derrivedMetrics;
+package com.appdynamics.ace.agents.derivedMetrics;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -31,7 +31,7 @@ public class CalculationEngine {
 
     public CalculationEngine() {
         _compilerConfig = new CompilerConfiguration();
-        _compilerConfig.setScriptBaseClass("com.appdynamics.ace.agents.derrivedMetrics.DSLDelegate"  );
+        _compilerConfig.setScriptBaseClass("com.appdynamics.ace.agents.derivedMetrics.DSLDelegate"  );
 
         _binder = new Binding();
         _shell = new GroovyShell(this.getClass().getClassLoader(),_binder,_compilerConfig);

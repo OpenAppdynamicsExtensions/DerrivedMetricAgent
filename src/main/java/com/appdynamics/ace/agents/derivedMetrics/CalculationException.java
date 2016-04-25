@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derrivedMetrics;
+package com.appdynamics.ace.agents.derivedMetrics;
 
 /**
  * Created by stefan.marx on 14.04.16.

@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derrivedMetrics
+package com.appdynamics.ace.agents.derivedMetrics
 
 import de.appdynamics.ace.metric.query.data.Column
 import de.appdynamics.ace.metric.query.data.DataMap

@@ -1,0 +1,8 @@
+
+connect {
+     controller "controller2.demo.appdynamics.com:80"
+     account "customer1"
+     user "demouser"
+     password "Ghed7ped0geN"
+ }
+

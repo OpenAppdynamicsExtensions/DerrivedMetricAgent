@@ -15,8 +15,8 @@ apply plugin: 'groovy'
 apply from: 'base.gradle'
 apply plugin: "application"
 
-applicationName = 'DerrivedMetrics'
-mainClassName = "com.appdynamics.ace.agents.derrivedMetrics.cli.Main"
+applicationName = 'DerivedMetrics'
+mainClassName = "com.appdynamics.ace.agents.derivedMetrics.cli.Main"
 applicationDefaultJvmArgs = ["-Xms50m","-Xmx50m"]
 
 
@@ -24,8 +24,8 @@ version='1.0'
 
 
 project.ext {
-    AgentName ='DerrivedMetricsAgent'
-    AgentPackageName='DerrivedMetricsAgent'
+    AgentName ='DerivedMetricsAgent'
+    AgentPackageName='DerivedMetricsAgent'
 }
 
 
@@ -71,7 +71,7 @@ generateMonitorXML {
     agentDescription = "TestAgent"
     timeout = 120
     agentName=AgentName
-    mainClass = 'com.appdynamics.ace.agents.derrivedMetrics.DerrivedMetricsAgent'
+    mainClass = 'com.appdynamics.ace.agents.derivedMetrics.DerrivedMetricsAgent'
     classpath = "${project.AgentName}.jar"    // be carefull this is a hardcoded Name !!!
 }
 
@@ -90,6 +90,14 @@ task packageAgent (type: Zip) {
         from jar
         from generateMonitorXML
 
+    }
+
+    into(AgentName+"/samples") {
+        from("./src/main/calculations/samples")
+    }
+
+    into(AgentName+"/scripts") {
+        from("./src/main/calculations/scripts")
     }
 
 

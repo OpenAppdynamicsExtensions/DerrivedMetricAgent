@@ -1,14 +1,12 @@
-package com.appdynamics.ace.agents.derrivedMetrics.cli
+package com.appdynamics.ace.agents.derivedMetrics.cli
 
-import com.appdynamics.ace.agents.derrivedMetrics.CalculationEngine
-import com.appdynamics.ace.agents.derrivedMetrics.cli.api.CommandWrapper
+import com.appdynamics.ace.agents.derivedMetrics.CalculationEngine
+import com.appdynamics.ace.agents.derivedMetrics.cli.api.CommandWrapper
 import com.appdynamics.ace.util.cli.api.api.CommandlineExecution
 import org.apache.log4j.ConsoleAppender
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
-
-import java.text.ParseException
 
 /**
  * Created by stefan.marx on 25.09.15.

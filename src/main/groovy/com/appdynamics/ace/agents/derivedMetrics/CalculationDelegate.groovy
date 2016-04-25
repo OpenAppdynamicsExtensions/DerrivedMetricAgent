@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derrivedMetrics
+package com.appdynamics.ace.agents.derivedMetrics
 
 import de.appdynamics.ace.metric.query.data.DataMap
 import de.appdynamics.ace.metric.query.data.DataRow
@@ -6,7 +6,6 @@ import de.appdynamics.ace.metric.query.data.ValueColumn
 import de.appdynamics.ace.metric.query.data.ValueDataObject
 import de.appdynamics.ace.metric.query.data.TimestampColumn
 import de.appdynamics.ace.metric.query.data.TimestampDataObject
-import de.appdynamics.ace.metric.query.rest.MetricData
 import org.apache.log4j.Logger
 
 /**

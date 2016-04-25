@@ -1,4 +1,4 @@
-package com.appdynamics.ace.agents.derrivedMetrics;
+package com.appdynamics.ace.agents.derivedMetrics;
 
 
 import com.singularity.ee.agent.systemagent.api.AManagedMonitor;
