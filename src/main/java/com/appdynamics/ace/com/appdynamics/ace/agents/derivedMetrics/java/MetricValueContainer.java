@@ -14,27 +14,27 @@ public class MetricValueContainer {
         private String _cluster      ;
         private Date _evalTime = new Date();
 
-        String get_path() {
+        String getPath() {
             return _path ;
         }
 
-        long get_value() {
+        long getValue() {
             return _value ;
         }
 
-        String get_aggregation() {
+        String getAggregation() {
             return _aggregation;
         }
 
-        String get_timeRollup() {
+        String getTimeRollup() {
             return _timeRollup;
         }
 
-        String get_cluster() {
+        String getCluster() {
             return _cluster    ;
         }
 
-        Date get_evalTime() {
+        Date getEvalTime() {
             return _evalTime    ;
         }
 

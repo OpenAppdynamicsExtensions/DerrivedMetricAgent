@@ -13,6 +13,7 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -43,10 +44,13 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
     @Override
     public TaskOutput execute(Map<String, String> map, TaskExecutionContext taskExecutionContext) throws TaskExecutionException {
 
-        for (Map.Entry e : map.entrySet()) {
-            logger.error(String.format("Argument %s --> %s",e.getKey(),e.getValue()));
-        }
-        File calcs = new File(taskExecutionContext.getTaskDir(),"calculations");
+
+
+        long start = System.currentTimeMillis();
+
+        File calcs = new File(taskExecutionContext.getTaskDir(),map.get("scriptDirectory"));
+        String keystoreLocation = map.get("passwordKS");
+
 
         // Exit if Directory doesn't exists OR not a Directory
         if (!calcs.exists() || !calcs.isDirectory()) return null;
@@ -59,9 +63,34 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
         });
 
 
+        CalculationEngine engine = new CalculationEngine();
         for (File l: listFiles) {
-            logger.info("Executing Calculations :"+l.getName() +" ("+l.getAbsolutePath()+")");
+            try {
+                List<MetricValueContainer> result = engine.execute(l);
+                for (MetricValueContainer value : result) {
+                    String path = value.getPath();
+                    path = fixPath(path,map);
+
+                    logger.debug("Send Metric to new Path  "+path+"\n  --> "+value);
+                    getMetricWriter(path,value.getAggregation(),value.getTimeRollup(),value.getCluster())
+                            .printMetric(""+value.getValue());
+
+
+                }
+            } catch (CalculationException e) {
+                logger.error("Error while executing script :"+l.getAbsolutePath(),e);
+            }
+
         }
+
+        logger.debug("TAsk Duration "+ ((System.currentTimeMillis()-start)/1000)+" seconds");
         return null;
+    }
+
+    private String fixPath(String path, Map<String, String> map) {
+        if (path.startsWith("Custom Metrics|") || path.startsWith("Server|")) return path;
+        else {
+            return "Custom Metrics|"+path;
+        }
     }
 }

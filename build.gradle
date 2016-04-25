@@ -59,7 +59,7 @@ dependencies {
     agentBinary "com.appdynamics:MachineAgent:4.1.0@zip"
 
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
-    agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.4.7'
+    agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.2'
 
 //    testCompile 'junit:junit:4.12'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.4'
@@ -75,10 +75,10 @@ generateMonitorXML {
             'passwordKS':'./metrics.ks'
     ]
 
-    agentDescription = "TestAgent"
+    agentDescription = "Derived metrics agent"
     timeout = 120
     agentName=AgentName
-    mainClass = 'com.appdynamics.ace.agents.derivedMetrics.DerrivedMetricsAgent'
+    mainClass = 'com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.DerrivedMetricsAgent'
     classpath = "${project.AgentName}.jar"    // be carefull this is a hardcoded Name !!!
 }
 

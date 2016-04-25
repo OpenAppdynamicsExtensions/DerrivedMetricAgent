@@ -1,5 +1,5 @@
 #!/bin/bash
-JAVA_OPTIONS='-Dappdynamics.agent.applicationName=APPDEX_LBG_test
+JAVA_OPTIONS='-Xmx512m -Xms512m -Dappdynamics.agent.applicationName=APPDEX_LBG_test
 -Dappdynamics.controller.hostName=docker.noip.me
 -Dappdynamics.controller.port=8090
 -Dappdynamics.agent.tierName=APPDEX
