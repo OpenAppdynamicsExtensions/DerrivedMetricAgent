@@ -109,6 +109,7 @@ class CalculationDelegate extends Script {
                 val = d.getTextValue();
                 if (d instanceof ValueDataObject) val = (d as ValueDataObject).getValue();
                 if (d instanceof  TimestampDataObject) val = (d as TimestampDataObject).getTimestampValue();
+
                 [(col.getName()): val]
             }
         }
@@ -207,7 +208,7 @@ class CalculationDelegate extends Script {
             columnList.each { column ->
                 if(column.equals(metricColumn)) {
                     ValueDataObject data = row.findData(column);
-                    values << data.getValue();
+                    values << data?.getValue()?:0; // no value equals to 0
                 }
             }
         }
