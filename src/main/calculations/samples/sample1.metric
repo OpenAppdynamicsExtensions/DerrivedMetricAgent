@@ -7,6 +7,9 @@ connect {
  }
 
 
+
+
+
 calculate (""" export aggregated 'Calls per Minute'  as calls ,'Errors per Minute' as errors
                         from 'Business Transaction Performance'.'Business Transactions'. * as tier. * as bt
                         on Application 'ECommerce'
