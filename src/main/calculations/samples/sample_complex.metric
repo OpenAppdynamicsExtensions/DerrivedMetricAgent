@@ -1,0 +1,35 @@
+
+connect {
+     controller "controller2.demo.appdynamics.com:80"
+     account "customer1"
+     user "demouser"
+     password "Ghed7ped0geN"
+ }
+
+
+double sumOfBT = 0;
+double countOfBT = 0;
+
+/** Iterate over all BT but only store the number of Calls and  number of BT found for active JSON bt
+*/
+calculate (""" export aggregated 'Calls per Minute'  as calls ,'Errors per Minute' as errors
+                        from 'Business Transaction Performance'.'Business Transactions'. * as tier. * as bt
+                        on Application 'ECommerce'
+                        for 1 minutes 5 minutes ago
+           """, {
+           if (bt.contains("json")) {
+                logger.info("BT: $bt")
+                sumOfBT += avg('calls');
+                countOfBT++;
+           }
+
+});
+
+
+logger.info ("Summ $sumOfBT :--> $countOfBT");
+
+// report outside of calculation blocks is also possible (use this to combine metrics from different calculations !!!
+if (countOfBT >0) reportMetric("group of BT|JSON|averageCalls",(double)(sumOfBT/countOfBT));
+else  reportMetric("group of BT|JSON|averageCalls",0);
+
+
