@@ -6,3 +6,16 @@ connect {
      password "Ghed7ped0geN"
  }
 
+
+calculate (""" export aggregated 'Calls per Minute'  as calls ,'Errors per Minute' as errors
+                        from 'Business Transaction Performance'.'Business Transactions'. * as tier. * as bt
+                        on Application 'ECommerce'
+                        for 10 minutes 5 hours ago
+           """, {
+
+bt = "ss"
+tier = "kk"
+println avg('errors') + ":: " + avg('calls') +" --> "+ avg('errors')/avg('calls');
+        reportMetric("error rate|$bt|$tier|errorRate %",(avg('errors')/avg('calls'))*100);
+});
+

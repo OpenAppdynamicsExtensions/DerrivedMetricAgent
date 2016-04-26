@@ -34,11 +34,11 @@ class CalculationDelegate extends Script {
         getLogger().info("Data:\n"+_filteredData.dumpData());
     }
 
-    def avg(String metricName) {
+    double avg(String metricName) {
         assertColumnExist(metricName);
         def values = this.getValues(metricName);
         getLogger().debug("Avg is " + values.sum()/values.size());
-        return values.sum()/values.size();
+        return (values.sum())/(values.size());
     }
 
     def min(String metricName) {
@@ -164,7 +164,7 @@ class CalculationDelegate extends Script {
         }
     }
 
-    def percentage(String metricName, double percent) {
+    double percentage(String metricName, double percent) {
         assertColumnExist(metricName);
 
         def values = this.getValues(metricName);
@@ -190,7 +190,7 @@ class CalculationDelegate extends Script {
         def timestamps = this.getValueTimestamps();
         return timestamps.last();
     }
-
+//
     def duration() {
         def timestamps = this.getValueTimestamps();
         return timestamps.last().getTime() - timestamps.first().getTime();
@@ -208,7 +208,9 @@ class CalculationDelegate extends Script {
             columnList.each { column ->
                 if(column.equals(metricColumn)) {
                     ValueDataObject data = row.findData(column);
-                    values << data?.getValue()?:0; // no value equals to 0
+                    def v = data?.value ;
+                    if (v == null) v = 0;
+                    values << v; // no value equals to 0
                 }
             }
         }
