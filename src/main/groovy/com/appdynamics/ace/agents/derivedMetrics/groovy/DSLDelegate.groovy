@@ -130,6 +130,30 @@ class DSLDelegate extends Script  {
     }
 
 
+    public static final String AVERAGE = "AVERAGE";
+    public static final String SUM = "SUM";
+    public static final String OBSERVATION = "OBSERVATION";
+    public static final String CURRENT = "CURRENT";
+    public static final String INDIVIDUAL = "INDIVIDUAL";
+    public static final String COLLECTIVE = "COLLECTIVE";
+
+    /** Report a Metric to Agent or CLI,
+     *
+     * @param path
+     * @param value
+     * @param aggregation multi execution (node to tier aggregation) [ AVERAGE, SUM, OBSERVATION ]
+     * @param timeRollup Time Rollout (1min -> 10 min -> 60 min) [AVERAGE, SUM, CURRENT  ]
+     * @param cluster  Cluster Rollup  (node to tier aggregation) [INDIVIDUAL, COLLECTIVE]
+     */
+    def reportMetric(String path,def value,
+                     String aggregation = AVERAGE,
+                     String timeRollup = AVERAGE,
+                     String cluster = INDIVIDUAL) {
+        def metricValue = new MetricValueContainer ( path, (long)value,
+                aggregation,timeRollup,cluster) ;
+
+        this._allValues.add(metricValue);
+    }
 
 
     Logger getLogger() {
