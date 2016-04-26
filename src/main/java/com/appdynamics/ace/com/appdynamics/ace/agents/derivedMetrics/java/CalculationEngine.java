@@ -1,5 +1,6 @@
 package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java;
 
+import com.appdynamics.ace.agents.derivedMetrics.groovy.DSLDelegate;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -40,10 +41,14 @@ public class CalculationEngine {
     public List<MetricValueContainer> execute(File calculation) throws CalculationException{
 
         try {
+
+            MetricsBinding bind = new MetricsBinding();
             Script script = _shell.parse(calculation);
-            Object result = script.run();
-            List<MetricValueContainer> metricResult = (List<MetricValueContainer>) result;
-            return metricResult;
+            Object result = ((DSLDelegate) script).executeMetricScript(bind);
+
+//            List<MetricValueContainer> metricResult = (List<MetricValueContainer>) values;
+//            return metricResult;
+            return bind.getValues();
 
         } catch (IOException e) {
             throw new CalculationException("IO Error while compiling",e);

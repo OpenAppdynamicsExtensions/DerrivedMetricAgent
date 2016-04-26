@@ -2,6 +2,7 @@ package com.appdynamics.ace.agents.derivedMetrics.groovy
 
 import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.CalculationException
 import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.MetricValueContainer
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.MetricsBinding
 import de.appdynamics.ace.metric.query.data.Column
 import de.appdynamics.ace.metric.query.data.DataMap
 import de.appdynamics.ace.metric.query.data.DataObject
@@ -19,8 +20,12 @@ class DSLDelegate extends Script  {
 
 
     public List<MetricValueContainer> _allValues = [];
+    private MetricsBinding _metricsBinding
 
 
+    public DSLDelegate() {
+
+    }
     def connect(Closure cl) {
         def conn = new Connection();
         def code = cl.rehydrate(conn, this, this);
@@ -70,7 +75,7 @@ class DSLDelegate extends Script  {
         }
 
 
-        _allValues += _values;
+        this._metricsBinding.addAllToValues(_values)
         return _values;
 
 
@@ -149,10 +154,11 @@ class DSLDelegate extends Script  {
                      String aggregation = AVERAGE,
                      String timeRollup = AVERAGE,
                      String cluster = INDIVIDUAL) {
+        logger.info("report metric $path : $value");
         def metricValue = new MetricValueContainer ( path, (long)value,
                 aggregation,timeRollup,cluster) ;
 
-        this._allValues.add(metricValue);
+        this._metricsBinding.addToValues(metricValue)
     }
 
 
@@ -167,8 +173,14 @@ class DSLDelegate extends Script  {
 
     @Override
     Object run() {
-         super.run();
-        return _allValues;
+          super.run();
+
+    }
+
+    Object executeMetricScript(MetricsBinding metricsBinding) {
+        this._metricsBinding = metricsBinding
+        this.run()
+
     }
 
 

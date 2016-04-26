@@ -29,6 +29,7 @@ class CalculationDelegate extends Script {
 
         this._filteredData = filteredData
         this._allData = allData
+
     }
 
     public void dumpData() {
@@ -269,6 +270,7 @@ class CalculationDelegate extends Script {
                      String aggregation = AVERAGE,
                      String timeRollup = AVERAGE,
                      String cluster = INDIVIDUAL) {
+        logger.info("report metric $path : $value");
         def metricValue = new MetricValueContainer ( path, (long)value,
                         aggregation,timeRollup,cluster) ;
 
