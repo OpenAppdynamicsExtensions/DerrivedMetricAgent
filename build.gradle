@@ -54,12 +54,12 @@ dependencies {
     compile "com.appdynamics:machineagent:4.1.0"
 
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
-    compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.2'
+    compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
 
     agentBinary "com.appdynamics:MachineAgent:4.1.0@zip"
 
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
-    agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.2'
+    agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
 
 //    testCompile 'junit:junit:4.12'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.4'
