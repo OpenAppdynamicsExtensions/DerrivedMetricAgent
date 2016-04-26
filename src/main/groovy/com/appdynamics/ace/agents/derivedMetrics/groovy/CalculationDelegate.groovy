@@ -4,6 +4,7 @@ import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.Calcul
 import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.MetricValueContainer
 import de.appdynamics.ace.metric.query.data.DataMap
 import de.appdynamics.ace.metric.query.data.DataRow
+import de.appdynamics.ace.metric.query.data.TextColumn
 import de.appdynamics.ace.metric.query.data.ValueColumn
 import de.appdynamics.ace.metric.query.data.ValueDataObject
 import de.appdynamics.ace.metric.query.data.TimestampColumn
@@ -190,7 +191,7 @@ class CalculationDelegate extends Script {
         def timestamps = this.getValueTimestamps();
         return timestamps.last();
     }
-//
+
     def duration() {
         def timestamps = this.getValueTimestamps();
         return timestamps.last().getTime() - timestamps.first().getTime();
@@ -281,6 +282,17 @@ class CalculationDelegate extends Script {
         def argList = args.collect { return it}
         getLogger().error("Missing Method : $name ( ${argList.join(',')} ) ");
         throw new CalculationException("Missing Method : $name  ")
+    }
+
+    @Override
+    Object getProperty(String property) {
+        def col;
+        if ( (col = _filteredData.getHeaderColumn(property))!= null) {
+            if (col instanceof TextColumn) return _filteredData.getValues(col).last()?.textValue;
+            if (col instanceof ValueColumn) return (_filteredData.getValues(col).last() as ValueDataObject)?.value;
+            if (col instanceof TimestampColumn) return (_filteredData.getValues(col).last() as TimestampDataObject)?.timestampValue;
+        }
+        return super.getProperty(property)
     }
 
     private void assertColumnExist(String name) {
