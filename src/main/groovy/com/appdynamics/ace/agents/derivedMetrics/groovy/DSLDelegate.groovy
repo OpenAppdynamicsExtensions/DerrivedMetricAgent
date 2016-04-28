@@ -27,7 +27,7 @@ class DSLDelegate extends Script   {
 
     }
     def connect(Closure cl) {
-        def conn = new Connection();
+        def conn = new Connection(_metricsBinding);
         def code = cl.rehydrate(conn, this, this);
         code.resolveStrategy = Closure.DELEGATE_FIRST;
         code();
@@ -95,6 +95,15 @@ class DSLDelegate extends Script   {
     * }
      */
     private class Connection {
+
+
+        private MetricsBinding _bind
+
+        public Connection(MetricsBinding bind) {
+            this._bind = bind
+        }
+
+
         private String _host ="localhost";
         private int _port =8090 ;
         String _account = "Customer1";
@@ -119,6 +128,10 @@ class DSLDelegate extends Script   {
 
         void password(String p) {
             _password=p;
+        }
+
+        void passwordKey(String p) {
+            _password=_bind.getKs().getPasswd(p);
         }
 
         void using_ssl() {
@@ -172,7 +185,13 @@ class DSLDelegate extends Script   {
     }
 
     @Override
+    void setBinding(Binding binding) {
+        if(binding instanceof MetricsBinding)   this._metricsBinding = binding ;
+    }
+
+    @Override
     Object run() {
+
           super.run();
 
     }

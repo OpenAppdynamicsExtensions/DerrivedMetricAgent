@@ -23,10 +23,12 @@ class Main {
         cle.setHelpVerboseEnabled(false);
 
         cle.addCommand(new CommandWrapper("execute","Run one or more calculation scripts",
-                [loglevel:[desc: 'set loglevel for debug output (error, info, debug)',opt:true,args:true,def: 'error']],
+                [loglevel:[desc: 'set loglevel for debug output (error, info, debug)',opt:true,args:true,def: 'error'],
+                 keystore:[desc: 'set keystore location',opt:true,args:true,def: 'metrics.ks']],
                 {  Map values,scripts ->
 
-                    CalculationEngine engine = new CalculationEngine();
+                    CalculationEngine engine = new CalculationEngine(
+                            new KeyStoreWrapper(values.keystore,KeyStoreWrapper.PASSWD ));
 
                     ConsoleAppender console = new ConsoleAppender(); //create appender
                     //configure the appender

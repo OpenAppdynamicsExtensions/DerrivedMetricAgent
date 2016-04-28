@@ -22,7 +22,7 @@ public class KeyStoreWrapper {
     private final KeyStore.PasswordProtection _keyStorePP;
     private String _location;
     private String _password;
-    private static String PASSWD ="hs87zfkslKJF";
+    public static String PASSWD ="hs87zfkslKJF";
 
     public KeyStoreWrapper(String location, String password) throws Exception {
         _location = location;

@@ -1,5 +1,6 @@
 package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java;
 
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.util.KeyStoreWrapper;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -18,41 +19,41 @@ import java.util.*;
 public class CalculationEngine {
     private static Logger logger = Logger.getLogger(CalculationEngine.class);
     private final CompilerConfiguration _compilerConfig;
-    private final Binding _binder;
+
     private final GroovyShell _shell;
 
     private File _path;
+    private KeyStoreWrapper _ks;
 
-    public CalculationEngine(File path) {
-          this();
+    public CalculationEngine(File path,KeyStoreWrapper ks) {
+          this(ks);
         _path = path;
 
 
     }
 
-    public CalculationEngine() {
+    public CalculationEngine(KeyStoreWrapper ks) {
+        _ks = ks;
         _compilerConfig = new CompilerConfiguration();
         _compilerConfig.setScriptBaseClass("com.appdynamics.ace.agents.derivedMetrics.groovy.DSLDelegate"  );
 
-        _binder = new Binding();
-        _shell = new GroovyShell(this.getClass().getClassLoader(),_binder,_compilerConfig);
+
+        _shell = new GroovyShell(this.getClass().getClassLoader(),new Binding(),_compilerConfig);
     }
 
     public List<MetricValueContainer> execute(File calculation) throws CalculationException{
 
         try {
 
-            MetricsBinding bind = new MetricsBinding();
+            MetricsBinding bind = new MetricsBinding(_ks);
             Script script = _shell.parse(calculation);
 
             try {
-                Object result = script.getClass().getMethod("executeMetricScript").invoke(script,bind);
+                script.setBinding(bind);
 
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+                script.run();
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

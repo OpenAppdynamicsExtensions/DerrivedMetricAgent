@@ -21,12 +21,11 @@ public class TestCalculations {
 
     public static void main(String[] args) throws Exception {
 
-        KeyStoreWrapper ksUtil = new KeyStoreWrapper("./metrics.ks", "Nigeheim");
-        ksUtil.setPasswd("klkl","opop");
-        System.out.println("PASSWORD :"+ksUtil.getPasswd("klkl"));
+        KeyStoreWrapper ksUtil = new KeyStoreWrapper("./metrics.ks", KeyStoreWrapper.PASSWD);
+        ksUtil.setPasswd("demoEnvironment","Ghed7ped0geN");
         ksUtil.store();
 
-        CalculationEngine engine = new CalculationEngine(new File("./src/main/calculations"));
+        CalculationEngine engine = new CalculationEngine(new File("./src/main/calculations"),ksUtil);
         try {
 
             ConsoleAppender console = new ConsoleAppender(); //create appender

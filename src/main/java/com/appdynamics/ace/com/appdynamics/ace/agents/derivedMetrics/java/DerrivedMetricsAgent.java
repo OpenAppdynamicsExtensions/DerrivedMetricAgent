@@ -1,6 +1,7 @@
 package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java;
 
 
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.util.KeyStoreWrapper;
 import com.singularity.ee.agent.systemagent.api.AManagedMonitor;
 import com.singularity.ee.agent.systemagent.api.TaskExecutionContext;
 import com.singularity.ee.agent.systemagent.api.TaskOutput;
@@ -65,28 +66,36 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
         });
 
 
-        CalculationEngine engine = new CalculationEngine();
-        for (File l: listFiles) {
-            try {
-                List<MetricValueContainer> result = engine.execute(l);
-                for (MetricValueContainer value : result) {
-                    String path = value.getPath();
-                    path = fixPath(path,map);
+        try {
+            KeyStoreWrapper ks = new KeyStoreWrapper(new File(taskExecutionContext.getTaskDir(), keystoreLocation).getAbsolutePath(),
+                        KeyStoreWrapper.PASSWD);
 
-                    logger.debug("Send Metric to new Path  "+path+"\n  --> "+value);
-                    getMetricWriter(path,value.getAggregation(),value.getTimeRollup(),value.getCluster())
-                            .printMetric(""+value.getValue());
+            CalculationEngine engine = new CalculationEngine(ks);
+            for (File l: listFiles) {
+                try {
+                    List<MetricValueContainer> result = engine.execute(l);
+                    for (MetricValueContainer value : result) {
+                        String path = value.getPath();
+                        path = fixPath(path,map);
+
+                        logger.debug("Send Metric to new Path  "+path+"\n  --> "+value);
+                        getMetricWriter(path,value.getAggregation(),value.getTimeRollup(),value.getCluster())
+                                .printMetric(""+value.getValue());
 
 
+                    }
+                } catch (CalculationException e) {
+                    logger.error("Error while executing script :"+l.getAbsolutePath(),e);
                 }
-            } catch (CalculationException e) {
-                logger.error("Error while executing script :"+l.getAbsolutePath(),e);
-            }
 
+            }
+        } catch (Exception e) {
+            logger.error("Error while opening PAssword File",e);
+            return new TaskOutput("ERROR");
         }
 
-        logger.debug("TAsk Duration "+ ((System.currentTimeMillis()-start)/1000)+" seconds");
-        return null;
+        logger.debug("Task Duration "+ ((System.currentTimeMillis()-start)/1000)+" seconds");
+        return new TaskOutput("DONE");
     }
 
     private String fixPath(String path, Map<String, String> map) {
