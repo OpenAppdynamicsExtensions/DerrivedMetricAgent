@@ -14,7 +14,7 @@ import org.apache.log4j.Logger
 
 
 
-class DSLDelegate extends Script  {
+class DSLDelegate extends Script   {
     ControllerRestAccess _connection;
     Logger _logger;
 

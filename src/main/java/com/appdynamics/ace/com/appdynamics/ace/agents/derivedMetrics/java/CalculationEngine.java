@@ -1,6 +1,5 @@
 package com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java;
 
-import com.appdynamics.ace.agents.derivedMetrics.groovy.DSLDelegate;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -10,6 +9,7 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -44,7 +44,18 @@ public class CalculationEngine {
 
             MetricsBinding bind = new MetricsBinding();
             Script script = _shell.parse(calculation);
-            Object result = ((DSLDelegate) script).executeMetricScript(bind);
+
+            try {
+                Object result = script.getClass().getMethod("executeMetricScript").invoke(script,bind);
+
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
 
 //            List<MetricValueContainer> metricResult = (List<MetricValueContainer>) values;
 //            return metricResult;
