@@ -3,6 +3,7 @@ package com.appdynamics.ace.agents.derivedMetrics.groovy.cli
 import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.CalculationEngine
 import com.appdynamics.ace.agents.derivedMetrics.groovy.cli.api.CommandWrapper
 import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.MetricValueContainer
+import com.appdynamics.ace.com.appdynamics.ace.agents.derivedMetrics.java.util.KeyStoreWrapper
 import com.appdynamics.ace.util.cli.api.api.CommandlineExecution
 import org.apache.log4j.ConsoleAppender
 import org.apache.log4j.Level
@@ -65,8 +66,34 @@ class Main {
                 }));
 
 
+                cle.addCommand(new CommandWrapper("passwd","specify or change password (passwd -keystore keystoreFile <user> <passwd>",
+                [keystore:[desc: 'set keystore location',opt:true,args:true,def: 'metrics.ks']],
+                {  Map values, String [] arguments ->
+                    KeyStoreWrapper ksUtil = new KeyStoreWrapper(values.keystore,KeyStoreWrapper.PASSWD );
+                    if (arguments.length != 2) {
+                        cle.execute(["passwd","-help"])
+                        return 1;
+                    };
 
-                cle.execute(args);
+                    ksUtil.setPasswd(arguments[0],arguments[1]);
+                    ksUtil.store();
+                    return 0;
+                }));
+
+                cle.addCommand(new CommandWrapper("listPasswd","specify or change password (passwd -keystore keystoreFile <user> <passwd>",
+                [keystore:[desc: 'set keystore location',opt:true,args:true,def: 'metrics.ks']],
+                {  Map values ->
+                    KeyStoreWrapper ksUtil = new KeyStoreWrapper(values.keystore,KeyStoreWrapper.PASSWD );
+
+                    for (String u : ksUtil.getUsers() ){
+                        println("$u : #############");
+
+                    }
+
+                    return 0;
+                }));
+
+        cle.execute(args);
     }
 
 

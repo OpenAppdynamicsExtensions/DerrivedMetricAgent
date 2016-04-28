@@ -10,6 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Created by stefan.marx on 22.04.16.
@@ -19,6 +22,7 @@ public class KeyStoreWrapper {
     private final KeyStore.PasswordProtection _keyStorePP;
     private String _location;
     private String _password;
+    private static String PASSWD ="hs87zfkslKJF";
 
     public KeyStoreWrapper(String location, String password) throws Exception {
         _location = location;
@@ -44,6 +48,19 @@ public class KeyStoreWrapper {
         }
 
         return keyStore;
+    }
+
+    public List<String> getUsers() throws KeyStoreException {
+        ArrayList<String> res = new ArrayList<String>();
+
+
+        Enumeration<String> aliases = _ks.aliases();
+        while (aliases.hasMoreElements()) {
+            res.add(aliases.nextElement());
+        }
+
+        return res;
+
     }
 
     public void setPasswd(String key, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
