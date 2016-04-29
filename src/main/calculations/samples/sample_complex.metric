@@ -18,7 +18,8 @@ calculate (""" export aggregated 'Calls per Minute'  as calls ,'Errors per Minut
                         for 1 minutes 5 minutes ago
            """, {
            if (bt.contains("json")) {
-                logger.info("BT: $bt")
+                numOfCalls = avg('calls');
+                logger.info("BT: $bt" + ", number of calls: $numOfCalls")
                 sumOfBT += avg('calls');
                 countOfBT++;
            }
@@ -26,10 +27,8 @@ calculate (""" export aggregated 'Calls per Minute'  as calls ,'Errors per Minut
 });
 
 
-logger.info ("Summ $sumOfBT :--> $countOfBT");
+logger.info ("Sum of calls $sumOfBT :--> Num of BTs $countOfBT");
 
 // report outside of calculation blocks is also possible (use this to combine metrics from different calculations !!!
 if (countOfBT >0) reportMetric("group of BT|JSON|averageCalls",(double)(sumOfBT/countOfBT));
 else  reportMetric("group of BT|JSON|averageCalls",0);
-
-
