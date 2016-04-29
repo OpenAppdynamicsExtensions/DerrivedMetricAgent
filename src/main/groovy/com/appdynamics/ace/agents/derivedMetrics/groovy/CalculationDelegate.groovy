@@ -154,9 +154,9 @@ class CalculationDelegate extends Script {
         if(timestampValues.size()>1) {
             def timestampDelta = timestampValues.last().getTime() - timestampValues[-2].getTime();
             if(timestampDelta == 60000) {
-                return values.last() - values[-2];
+                return (values.last() - values[-2]).abs();
             } else if(timestampDelta > 60000){
-                return (values.last() - values[-2]) / (timestampDelta / 60000);
+                return (values.last() - values[-2]).abs() / (timestampDelta / 60000);
             } else {
                 // the timestamp delta should actually never be less than 1 minute since this is the finest granularity where data is collected.
             }
