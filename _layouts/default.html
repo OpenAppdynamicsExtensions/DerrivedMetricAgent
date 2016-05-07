@@ -10,7 +10,7 @@
    <script src="{{ site.path }}/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -23,8 +23,16 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="https://github.com/henrythemes/jekyll-bootstrap-theme">About</a></li>
+            {% for pp in site.pages  %}
+              {% if (pp.menu == true  ) %}
+                {% if pp.title == page.title %}
+                  <li class="active" ><a href="{{site.baseurl}}{{ pp.url }}"> {{pp.title}}</a> </li> 
+                {% else %}
+                  <li><a href="{{site.baseurl}}{{ pp.url }}"> {{pp.title}}</a> </li> 
+                {% endif %}
+              {% endif %}   <!-- resource-p -->
+              {% endfor %}  <!-- pp -->
+
           </ul>
         </div><!--/.nav-collapse -->
       </div>
