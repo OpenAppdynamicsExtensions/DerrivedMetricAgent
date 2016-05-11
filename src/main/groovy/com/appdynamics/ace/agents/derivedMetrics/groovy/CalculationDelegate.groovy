@@ -139,7 +139,7 @@ class CalculationDelegate extends Script {
         def values = this.getValues(metricName);
         if(values.size()>1) {
             getLogger().debug("Last value is " + values.last() + ", second last value is " + values[-2] + ". Hence the delta is " + values.last() - values[-2]);
-            return values.last() - values[-2];
+            return (values.last() - values[-2]).abs();
         } else {
            throw new CalculationException("There are less than two values to derive a delta from.");
             return null;
@@ -154,9 +154,9 @@ class CalculationDelegate extends Script {
         if(timestampValues.size()>1) {
             def timestampDelta = timestampValues.last().getTime() - timestampValues[-2].getTime();
             if(timestampDelta == 60000) {
-                return values.last() - values[-2];
+                return (values.last() - values[-2]).abs();
             } else if(timestampDelta > 60000){
-                return (values.last() - values[-2]) / (timestampDelta / 60000);
+                return (values.last() - values[-2]).abs() / (timestampDelta / 60000);
             } else {
                 // the timestamp delta should actually never be less than 1 minute since this is the finest granularity where data is collected.
             }
@@ -271,7 +271,7 @@ class CalculationDelegate extends Script {
                      String timeRollup = AVERAGE,
                      String cluster = INDIVIDUAL) {
         logger.info("report metric $path : $value");
-        def metricValue = new MetricValueContainer ( path, (long)value,
+        def metricValue = new MetricValueContainer ( path, (long) value,
                         aggregation,timeRollup,cluster) ;
 
         def values = _metricValues[path] ?: []
