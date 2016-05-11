@@ -60,6 +60,7 @@ dependencies {
 
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
     agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
+    agentRuntime 'com.appdynamics.ace.cli:CommandFramework:1.4'
 
 //    testCompile 'junit:junit:4.12'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.4'
@@ -100,6 +101,11 @@ task packageAgent (type: Zip) {
     into(AgentName+"/lib") {
         from(project.configurations.agentRuntime)
     }
+
+    into(AgentName+"/bin") {
+        from ("./src/main/shell/")
+    }
+
     into(AgentName) {
         from jar
         from generateMonitorXML
