@@ -86,3 +86,22 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
            })
 ```
 
+### Example of a more complex example
+
+Below is a more complex example where the average response time for a number of BTs is averaged again
+
+```
+double sumOfResponseTimes = 0;
+double count = 0;
+
+calculate (""" export 'Average Response Time (ms)' as responseTime
+                        from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT
+                        on Application 'ECommerce'
+                        for 15 minutes
+           """, {
+                println "Individual response time: " + responseTime
+                sumOfResponseTimes += avg('responseTime')
+                count++
+           })
+println "Avg. Response Time over all BTs: "+ sumOfResponseTimes / count
+```
