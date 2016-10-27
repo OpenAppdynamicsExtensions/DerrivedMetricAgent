@@ -86,7 +86,7 @@ calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Avera
            })
 ```
 
-### Example of a more complex example
+### Example of a more complex derived metric
 
 Below is a more complex example where the average response time for a number of BTs is averaged again
 
