@@ -46,6 +46,7 @@ configurations {
     agentRuntime
     agentBinary
     groovyDoc
+    cliRuntime
 }
 
 
@@ -55,12 +56,22 @@ dependencies {
 
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
     compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
+    compile 'com.appdynamics.ace.adql:Client:+'
+    compile 'quartz:quartz:1.5.2'
 
     agentBinary "com.appdynamics:MachineAgent:4.1.0@zip"
+
+    cliRuntime ("log4j:log4j:1.2.17")
+    cliRuntime "com.appdynamics:machineagent:4.1.0"
+    cliRuntime 'com.appdynamics.ace.adql:Client:+'
+    cliRuntime 'quartz:quartz:1.5.2'
+
 
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
     agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
     agentRuntime 'com.appdynamics.ace.cli:CommandFramework:1.4'
+    agentRuntime 'com.appdynamics.ace.adql:Client:+'
+    agentRuntime 'quartz:quartz:1.5.2'
 
 //    testCompile 'junit:junit:4.12'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.4'
@@ -100,6 +111,10 @@ task packageAgent (type: Zip) {
 
     into(AgentName+"/lib") {
         from(project.configurations.agentRuntime)
+    }
+
+    into(AgentName+"/clilib") {
+        from(project.configurations.cliRuntime)
     }
 
     into(AgentName+"/bin") {

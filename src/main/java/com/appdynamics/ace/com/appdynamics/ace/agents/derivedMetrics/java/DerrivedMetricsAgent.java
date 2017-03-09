@@ -70,6 +70,7 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
             KeyStoreWrapper ks = new KeyStoreWrapper(new File(taskExecutionContext.getTaskDir(), keystoreLocation).getAbsolutePath(),
                         KeyStoreWrapper.PASSWD);
 
+            //TODO: make this persistent so that global caching and cronjobs are enabled !!!
             CalculationEngine engine = new CalculationEngine(ks);
             for (File l: listFiles) {
                 try {
@@ -90,7 +91,7 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
 
             }
         } catch (Exception e) {
-            logger.error("Error while opening PAssword File",e);
+            logger.error("Error while opening Password File",e);
             return new TaskOutput("ERROR");
         }
 

@@ -24,7 +24,8 @@ class Main {
 
         cle.addCommand(new CommandWrapper("execute","Run one or more calculation scripts",
                 [loglevel:[desc: 'set loglevel for debug output (error, info, debug)',opt:true,args:true,def: 'error'],
-                 keystore:[desc: 'set keystore location',opt:true,args:true,def: 'metrics.ks']],
+                 keystore:[desc: 'set keystore location',opt:true,args:true,def: 'metrics.ks'],
+                 repeat: [desc: 'repeat execution x times, pause 1 minute between executions',opt:true, args:true, def:'1']],
                 {  Map values,scripts ->
 
                     CalculationEngine engine = new CalculationEngine(
@@ -34,33 +35,40 @@ class Main {
                     //configure the appender
                     String PATTERN = "%d [%p:%c] %m%n";
                     console.setLayout(new PatternLayout(PATTERN));
-                    switch ((values.loglevel as String).toLowerCase()) {
-                        case "error" :
-                            console.setThreshold(Level.ERROR);
-                            break;
-                        case "info" :
-                            console.setThreshold(Level.INFO);
-                            break;
-                        case "debug" :
-                            console.setThreshold(Level.DEBUG);
-                            break;
-                        default:
-                            console.setThreshold(Level.ERROR);
-                    }
+                   // console.setThreshold(Level.ERROR);
+
+
                     console.activateOptions();
                     Logger.getRootLogger().addAppender(console);
+                    Logger.getRootLogger().setLevel(Level.INFO)
 
+                    def aceLogger = Logger.getLogger("com.appdynamics.ace")
 
-                    scripts.each(){
-                        script ->
-                            File f = new File(script);
-                            List<MetricValueContainer> results
-                            results = engine.execute(f);
-                            results.eachWithIndex { MetricValueContainer r,i->
-                                println "$i : ${r.valueString}"
-                            }
+                    switch ((values.loglevel as String).toLowerCase()) {
+                        case "error" :
+                            aceLogger.setLevel(Level.ERROR)
+                            break;
+                        case "info" :
+                            aceLogger.setLevel(Level.INFO);
+                            break;
+                        case "debug" :
+                            aceLogger.setLevel(Level.DEBUG);
+                            break;
+                        default:
+                            aceLogger.setLevel(Level.ERROR);
+                    }
 
-
+                    def repeat = values.repeat as int
+                    println("$repeat Repeats to be executed")
+                    for (int i = 0; i < repeat; i++) {
+                        println "############################"
+                        println "### Execution Count ${i+1}"
+                        println "############################"
+                        executeScripts(scripts, engine)
+                        println "############################"
+                        println "### Execution Ended ${new Date()}"
+                        println "############################"
+                        sleep 60000
                     }
 
                     return 0;
@@ -98,7 +106,19 @@ class Main {
         cle.execute(args);
     }
 
+    private static Object executeScripts(scripts, engine) {
+        scripts.each() {
+            script ->
+                File f = new File(script);
+                List<MetricValueContainer> results
+                results = engine.execute(f);
+                results.eachWithIndex { MetricValueContainer r, i ->
+                    println "$i : ${r.valueString}"
+                }
 
+
+        }
+    }
 
 
 }

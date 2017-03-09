@@ -6,6 +6,7 @@ import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.quartz.CronTrigger;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -24,6 +25,7 @@ public class CalculationEngine {
 
     private File _path;
     private KeyStoreWrapper _ks;
+    private HashMap<String, CronTrigger> _cronTrigger = new HashMap<>();
 
     public CalculationEngine(File path,KeyStoreWrapper ks) {
           this(ks);
@@ -45,7 +47,8 @@ public class CalculationEngine {
 
         try {
 
-            MetricsBinding bind = new MetricsBinding(_ks);
+            MetricsBinding bind = new MetricsBinding(_ks,this);
+            bind.setScriptName(calculation.getAbsolutePath());
             Script script = _shell.parse(calculation);
 
             try {
@@ -54,7 +57,7 @@ public class CalculationEngine {
                 script.run();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Error while execution Script :"+calculation.getAbsolutePath(),e);
             }
 
 
@@ -100,5 +103,16 @@ public class CalculationEngine {
 
         return Arrays.asList(listFiles);
 
+    }
+
+    public CronTrigger getCronTrigger(String name) {
+        if (_cronTrigger.containsKey(name)) return _cronTrigger.get(name);
+        else return null;
+    }
+
+    public void storeCronTrigger(CronTrigger trigger) {
+        logger.info("New Trigger stored :"+trigger);
+        logger.info("Trigger Expression: "+trigger.getCronExpression()+"  - Next Execution :"+trigger.getNextFireTime());
+        _cronTrigger.put(trigger.getName(),trigger);
     }
 }

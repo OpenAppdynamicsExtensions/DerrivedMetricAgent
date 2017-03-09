@@ -1,0 +1,24 @@
+
+connect {
+     controller "controller2.demo.appdynamics.com:80"
+     account "customer1"
+     user "demouser"
+     password "GEHEIM"
+ }
+
+
+
+
+
+calculate (""" export aggregated <metrics>
+                        from <path>
+                        on Application '<ApplicationNAme>'
+                        for <time>
+           """, {
+
+
+        logger.info("Log Entry")
+   //     logger.info( avg('errors') + ":: " + avg('calls') +" --> "+ avg('errors')/avg('calls'));
+   //     reportMetric("error rate|$bt|$tier|errorRate %",(avg('errors')/avg('calls'))*100);
+});
+

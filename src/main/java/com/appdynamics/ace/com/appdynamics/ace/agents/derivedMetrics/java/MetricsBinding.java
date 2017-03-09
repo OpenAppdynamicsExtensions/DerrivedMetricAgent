@@ -12,16 +12,25 @@ import java.util.List;
 public class MetricsBinding extends Binding {
 
 
+    private String _scriptName;
+
     public KeyStoreWrapper getKs() {
         return _ks;
     }
 
     private KeyStoreWrapper _ks;
 
-    public MetricsBinding(KeyStoreWrapper ks) {
+    public CalculationEngine getCalculationEngine() {
+        return _calculationEngine;
+    }
+
+    private CalculationEngine _calculationEngine;
+
+    public MetricsBinding(KeyStoreWrapper ks, CalculationEngine calculationEngine) {
         //TODO :
 
         _ks = ks;
+        _calculationEngine = calculationEngine;
     }
 
     public List<MetricValueContainer> getValues() {
@@ -38,4 +47,12 @@ public class MetricsBinding extends Binding {
 
 
     List<MetricValueContainer> values = new ArrayList<MetricValueContainer>();
+
+    public void setScriptName(String scriptName) {
+        _scriptName = scriptName;
+    }
+
+    public String getScriptName() {
+        return _scriptName;
+    }
 }
