@@ -6,3 +6,6 @@ build/
 .idea/
 .gradletasknamecache
 *.ks
+/src/main/calculations/samples/sampleAnalyticsCron.metric
+/src/main/calculations/samples/sampleAnalytics1.metric
+/src/main/calculations/samples/sampleAnalytics2.metric
