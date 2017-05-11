@@ -40,11 +40,12 @@ class CalculationDelegateBase extends Script{
      * @param cluster  Cluster Rollup  (node to tier aggregation) [INDIVIDUAL, COLLECTIVE]
      */
     def reportMetric(String path,def value,
+                     int ttl = 1,
                      String aggregation = AVERAGE,
                      String timeRollup = AVERAGE,
                      String cluster = INDIVIDUAL) {
         logger.info("report metric $path : $value");
-        def metricValue = new MetricValueContainer ( path, (long) value,
+        def metricValue = new MetricValueContainer ( path, (long) value, ttl,
                 aggregation,timeRollup,cluster) ;
 
         def values = _metricValues[path] ?: []

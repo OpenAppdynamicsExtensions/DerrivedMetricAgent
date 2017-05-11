@@ -80,11 +80,14 @@ dependencies {
     groovyDoc 'org.codehaus.groovy:groovy-ant:2.3.3'
 }
 
-
+//TODO: Include Documemntation and samples
 generateMonitorXML {
     taskArguments = [
             'scriptDirectory': './scripts/',
-            'passwordKS':'./metrics.ks'
+            'passwordKS':'./metrics.ks',
+            'metricPrefix':'Custom Metrics|',
+            'metricCache':'true',
+            'internalMonitoring':'true'
     ]
 
     agentDescription = "Derived metrics agent"

@@ -11,7 +11,8 @@ public class MetricValueContainer {
         private long _value ;
         private String _aggregation;
         private String _timeRollup  ;
-        private String _cluster      ;
+    private int _ttl;
+    private String _cluster      ;
         private Date _evalTime = new Date();
 
         String getPath() {
@@ -38,8 +39,9 @@ public class MetricValueContainer {
             return _evalTime    ;
         }
 
-        public MetricValueContainer (String path, long value,
+        public MetricValueContainer (String path, long value,int ttl,
                                      String aggregation, String timeRollup, String cluster) {
+            this._ttl = ttl;
 
             this._cluster = cluster;
             this._timeRollup = timeRollup;
@@ -50,7 +52,7 @@ public class MetricValueContainer {
 
 
         public String toString () {
-            return String.format("%s : (%s) -> %d [%s,%s,%s]",_evalTime,_path,_value,_aggregation,_timeRollup,_cluster);
+            return String.format("%s : (%s) -> %d [%s,%s,%s]  TTL:%d",_evalTime,_path,_value,_aggregation,_timeRollup,_cluster,_ttl);
 
         }
 
@@ -58,4 +60,11 @@ public class MetricValueContainer {
             return String.format(" (%s) \t-> %d",_path,_value);
         }
 
+    public synchronized boolean isLife() {
+        return _ttl>0;
     }
+
+    public synchronized void reported() {
+        _ttl--;
+    }
+}

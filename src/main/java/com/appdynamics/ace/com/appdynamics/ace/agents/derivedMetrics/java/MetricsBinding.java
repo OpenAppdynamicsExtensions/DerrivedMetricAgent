@@ -27,7 +27,6 @@ public class MetricsBinding extends Binding {
     private CalculationEngine _calculationEngine;
 
     public MetricsBinding(KeyStoreWrapper ks, CalculationEngine calculationEngine) {
-        //TODO :
 
         _ks = ks;
         _calculationEngine = calculationEngine;

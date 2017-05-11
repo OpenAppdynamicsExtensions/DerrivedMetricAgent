@@ -61,6 +61,7 @@ class Main {
                     def repeat = values.repeat as int
                     println("$repeat Repeats to be executed")
                     for (int i = 0; i < repeat; i++) {
+                       if (i>0) sleep 60000
                         println "############################"
                         println "### Execution Count ${i+1}"
                         println "############################"
@@ -68,8 +69,9 @@ class Main {
                         println "############################"
                         println "### Execution Ended ${new Date()}"
                         println "############################"
-                        sleep 60000
+
                     }
+
 
                     return 0;
 
@@ -103,7 +105,8 @@ class Main {
                     return 0;
                 }));
 
-        cle.execute(args);
+        def status = cle.execute(args);
+        System.exit(status);
     }
 
     private static Object executeScripts(scripts, engine) {
@@ -113,7 +116,7 @@ class Main {
                 List<MetricValueContainer> results
                 results = engine.execute(f);
                 results.eachWithIndex { MetricValueContainer r, i ->
-                    println "$i : ${r.valueString}"
+                    println "$i : ${r}"
                 }
 
 

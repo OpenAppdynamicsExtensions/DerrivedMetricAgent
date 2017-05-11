@@ -1,0 +1,24 @@
+
+
+cron  pattern: "0 0 1 1 * ?" ,
+        name: "Monthly",
+        startOnInit: true, {
+
+    def listOfName = ["tester", "nope", "bla"]
+
+    listOfName.each { metric ->
+        reportMetric("myTest|$metric", 23)
+
+    }
+}
+
+
+cron  pattern: "0 0/5 * * * ?" ,
+        name: "5Minutes", {
+
+    def mapOfNames = [tester: 98, bla: 88, mike: 90, november: 77]
+
+    mapOfNames.each { k, v ->
+        reportMetric("MyMapMetrics|$k", v)
+    }
+}

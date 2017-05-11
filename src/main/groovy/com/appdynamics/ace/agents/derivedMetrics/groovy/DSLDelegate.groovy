@@ -58,11 +58,15 @@ class DSLDelegate extends Script   {
     }
 
 
+
+
     List<MetricValueContainer> calculateAnalytics (String query,Date start = new Date(new Date().time-(1000*60*60*4)),
                                                    Date end = new Date(),
-                                                   int limit = 1000,
+                                                   boolean retrieveAll=false,
                                                    Closure calculation) {
-        println("TIME: $start - $end")
+
+        int limit = 1000;
+        if (query.toLowerCase().contains(" limit ")) limit = 0;
 
         ADQLQuery q =  _connectionADQL.query()
 
@@ -98,7 +102,7 @@ class DSLDelegate extends Script   {
 
         ADQLResult res = q.execute(true);
 
-        while (res.isPartialComplete()) {
+        while (res.isPartialComplete() && retrieveAll ) {
            try {
                List<PayloadDataElement> data = res.getPayload().getAllData()
                Date et = data.get(data.size()-1).getDate("eventTimestamp");
@@ -169,7 +173,7 @@ class DSLDelegate extends Script   {
         CronTrigger cronTrigger = _metricsBinding.calculationEngine.getCronTrigger(triggername)
         if (cronTrigger == null) {
             cronTrigger = new CronTrigger(triggername,"SCRIPT",cron)
-            if(shouldPreStart) cronTrigger.setNextFireTime(new Date())
+            if(shouldPreStart) cronTrigger.setNextFireTime(new Date (System.currentTimeMillis()-1000))
             else cronTrigger.triggered(null);
 
 
@@ -240,7 +244,6 @@ class DSLDelegate extends Script   {
             _token=_bind.getKs().getPasswd(p);
         }
 
-        // TODO PROXY Connection TOTO
         def proxy (Closure cl) {
             def proxy = new ProxyConnection(_bind);
             def code = cl.rehydrate(proxy,this,this);
@@ -369,11 +372,12 @@ class DSLDelegate extends Script   {
      * @param cluster  Cluster Rollup  (node to tier aggregation) [INDIVIDUAL, COLLECTIVE]
      */
     def reportMetric(String path,def value,
+                     int ttl = 1,
                      String aggregation = AVERAGE,
                      String timeRollup = AVERAGE,
                      String cluster = INDIVIDUAL) {
         logger.info("report metric $path : $value");
-        def metricValue = new MetricValueContainer ( path, (long)value,
+        def metricValue = new MetricValueContainer ( path, (long)value,ttl,
                 aggregation,timeRollup,cluster) ;
 
         this._metricsBinding.addToValues(metricValue)
