@@ -13,7 +13,6 @@ public class TESTER {
     public static void main(String[] args) {
         try {
 
-            //TODO: Build in processing power
 
             CronTrigger ct = new CronTrigger("script", "scriptname", "*/5 * * * * ?");
             CronTrigger ct2 = new CronTrigger("scripts", "scriptname", "0 0 02 * * ?");

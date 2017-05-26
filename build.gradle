@@ -56,21 +56,21 @@ dependencies {
 
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
     compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
-    compile 'com.appdynamics.ace.adql:Client:+'
+    compile 'com.appdynamics.ace.adql:Client:0.4.4'
     compile 'quartz:quartz:1.5.2'
 
     agentBinary "com.appdynamics:MachineAgent:4.1.0@zip"
 
     cliRuntime ("log4j:log4j:1.2.17")
     cliRuntime "com.appdynamics:machineagent:4.1.0"
-    cliRuntime 'com.appdynamics.ace.adql:Client:+'
+    cliRuntime 'com.appdynamics.ace.adql:Client:0.4.4'
     cliRuntime 'quartz:quartz:1.5.2'
 
 
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
     agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
     agentRuntime 'com.appdynamics.ace.cli:CommandFramework:1.4'
-    agentRuntime 'com.appdynamics.ace.adql:Client:+'
+    agentRuntime 'com.appdynamics.ace.adql:Client:0.4.4'
     agentRuntime 'quartz:quartz:1.5.2'
 
 //    testCompile 'junit:junit:4.12'

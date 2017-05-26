@@ -107,6 +107,7 @@ class DSLDelegate extends Script   {
                List<PayloadDataElement> data = res.getPayload().getAllData()
                Date et = data.get(data.size()-1).getDate("eventTimestamp");
                res = q.continueQuery(et,true,data.get(data.size()-1));
+               getLogger().info("Retrieve Next :"+res.getPayload().total)
            } catch (Exception ex ) {
                getLogger().error("Limit reached, continuing Transaction not possible because Field eventTimestamp not found.")
                break;

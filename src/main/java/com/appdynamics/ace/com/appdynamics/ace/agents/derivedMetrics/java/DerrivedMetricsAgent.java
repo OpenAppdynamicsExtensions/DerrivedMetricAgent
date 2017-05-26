@@ -178,6 +178,11 @@ public class DerrivedMetricsAgent extends AManagedMonitor {
     private void pushMetric(String path, MetricValueContainer value, String filename) {
         if (_bfMetricCached) {
             if (!_metricCache.containsKey(filename)) {
+
+                // TODO add support for multiple metric with same path . implement a array storage ...
+                // BUT Think about clear criteria AND elements
+                // TODO: Extract Metric cache handling into seperate Class
+
                 _metricCache.put(filename,new HashMap<String,MetricValueContainer>());
             }
             HashMap<String, MetricValueContainer> cache = _metricCache.get(filename);
