@@ -1,0 +1,22 @@
+
+connect {
+     controller "smarxdocker.ddns.net:8090"
+     account "customer1"
+     user "admin"
+     password "admin"
+ }
+
+
+
+
+
+calculate (""" export aggregated 'Calls per Minute' as calls
+                        from 'Business Transaction Performance'.'Business Transactions'. * as tier.* as bt
+                        on Application 'InsuranceCo Anytime'
+                        for 1 minute 5  minutes ago
+           """, {
+
+
+        reportMetric("call|$tier|$bt|callsPerMinute", avg('calls'))
+});
+

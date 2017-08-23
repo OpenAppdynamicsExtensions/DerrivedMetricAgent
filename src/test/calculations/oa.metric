@@ -1,0 +1,68 @@
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+connect {
+    controller "oa.saas.appdynamics.com:443"
+    using_ssl ()
+    account "appdynamics"
+    user "stefan.marx"
+    password "smuN2UHeqsTeKMfT3ety"
+}
+
+
+def metrics = [:]
+
+ExecutorService executor = Executors.newFixedThreadPool(20);
+
+def cal(String name,def metrics) {
+    try {
+        calculate(""" export aggregated 'MetricsPerMinute' as metr 
+                        from 'Information Points|MetricDataWriterBean.writeNumericMetrics'
+                        on Application '${name}'
+                        for 7 days  1 day ago
+           """, {
+
+            println "Query ${name}"
+            metrics[name]["metrics"] = max("metr")
+        })
+        //Application Infrastructure Performance|App Server|Hardware Resources|Disks|KB written/sec
+        calculate(""" export aggregated 'KB written/sec' as disk 
+                            from 'Application Infrastructure Performance|App Server|Hardware Resources|Disks'
+                            on Application '${name}'
+                        for 7 days  1 day ago
+               """, {
+
+            println "Query ${name}"
+
+            metrics[name]["MB/s"] = avg("disk") / 1024
+            metrics[name]["maxMB/s"] = max("disk") / 1024
+        });
+
+    } catch (Throwable t) {
+        t.printStackTrace()
+    }
+}
+
+//Information Points|MetricDataWriterBean.writeNumericMetrics|MetricsPerMinute
+(1..255).each { paidNumber ->
+
+    String name = "paid$paidNumber"
+    metrics[name] = [:]
+
+    executor.execute {cal(name,metrics)} as Runnable
+
+}
+
+
+executor.shutdown();
+while (!executor.isTerminated()) {
+}
+
+metrics = metrics.sort { a, b ->
+    a.value['metrics'] <=> b.value['metrics'] }
+
+println "name,metrics/min,MB/s avg, MB/s max"
+metrics.each {k,v ->
+    println "$k,${v['metrics']},${v['MB/s']},${v['maxMB/s']}"
+}
