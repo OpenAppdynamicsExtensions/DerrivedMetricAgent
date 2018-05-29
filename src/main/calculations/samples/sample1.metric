@@ -1,9 +1,9 @@
 
 connect {
-     controller "controller2.demo.appdynamics.com:80"
-     account "customer1"
-     user "demouser"
-     password "GEHEIM"
+     controller "smarxdocker.ddns.net:8090"
+     account "system"
+     user "root"
+     password "admin"
  }
 
 
@@ -12,11 +12,11 @@ connect {
 
 calculate (""" export aggregated 'Calls per Minute'  as calls ,'Errors per Minute' as errors
                         from 'Business Transaction Performance'.'Business Transactions'. * as tier. * as bt
-                        on Application 'ECommerce'
+                        on Application 'AppDynamics Controller'
                         for 10 minutes 5 hours ago
            """, {
 
-
+    reportMetric("selfMonitoring|${tier}|${bt}|calls",avg('calls'));
 
 });
 
