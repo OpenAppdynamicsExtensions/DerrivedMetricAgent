@@ -1,91 +1,18 @@
 
 connect {
-     controller "controller2.demo.appdynamics.com:80"
+     controller "smarxdocker2.ddns.net:8090"
      account "customer1"
-     user "demouser"
-     passwordKey "demoEnvironment"
+     user "admin"
+     password "admin"
  }
 
 
 
-calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)'
-                        from 'Overall Application Performance'
-                        on Application 'ECommerce'
-                        for 30 minutes 5 hours ago
+calculate (""" export aggregated 'Success Rate (%)' as sla
+                        from 'Application Infrastructure Performance'. * as cluster . 'Hardware Resources|Service Availability'. '1'
+                         on Application 'Server & Infrastructure Monitoring'
+                         for 1 minutes 60 minutes ago
            """, {
-
-
-
-            //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
-            dumpData();
-            // println avg('calls');
-            // println min('calls');
-            // println max('calls');
-            // println sum('calls');
-            // println count('calls');
-            //println values('calls');
-            //println values('calls','Average Response Time (ms)');
-            //println first('calls');
-            //println last('calls');
-            reportMetric("calls|delta", delta('calls'));
-            reportMetric("calls|sum",sum('calls'));
-            //println startTime();
-            println endTime();
-            println duration();
-            println deltaMin('calls');
+            reportMetric("slaDoublePrecision|${cluster}|1|SLAhigh",avg('sla')*1000);
            })
 
-
-/*
-calculate (""" export  'Calls per Minute'  as calls ,'Errors per Minute' ,'Average Response Time (ms)' as resp
-                       from 'Overall Application Performance'
-                       on Application 'ECommerce'
-                       for 5 minutes 5 minutes ago
-          """, {
-
-
-
-
-            def f = values('time','calls','resp');
-
-            println f.time
-            println f.collect {row -> "$row.time :>>> $row.resp"}.join("\n")
-
-          })
-*/
-/*
-calculate (""" export 'Calls per Minute' ,'Errors per Minute'
-                         from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT
-                         on Application 'ECommerce'
-                         for 1 minutes 5 minutes ago
-           """, {
-            // query ().avg("")
-            //reportMetric("BTSpecificErrorRate|${Tier}|${BT}|errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
-
-           })
-
-           */
-
-/*  prototype Calculation
-
- calculate (""" export 'Calls per Minute' ,'Errors per Minute'
-                         from 'Overall Application Performance'
-                         on Application 'ECommerce'
-                         for 1 minutes 5 minutes ago
-            """, {
-
-             //reportMetric("errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
-
-            })
-calculate """ 'Calls per Minute' ,'Errors per Minute'
-                        from 'Business Transaction Performance|Business Transactions'. * as Tier. * as BT
-                        on Application 'ECommerce'
-                        for 1 minutes 5 minutes ago
-           """ {
-
-                // Will iterate for each "metric Path" basically this will be executed multiple times
-                reportMetric("BTSpecificErrorRate|${Tier}|${BT}|errorRate",(avg('Calls per Minute')/avg('Errors per Minute'))*100 )
-
-           }
-
- */

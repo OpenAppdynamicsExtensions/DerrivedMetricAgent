@@ -1,6 +1,6 @@
 
 connect {
-     controller "smarxdocker.ddns.net:8090"
+     controller "smarxdocker2.ddns.net:8090"
      account "system"
      user "root"
      password "admin"
