@@ -31,7 +31,7 @@ project.ext {
 
 repositories {
     maven {
-//        url "https://raw.github.com/Appdynamics/artifact-library/master/repo/"
+////        url "https://raw.github.com/Appdynamics/artifact-library/master/repo/"
         url "file:///vlab/maven/artifact-library/repo/"
     }
     maven {
@@ -55,7 +55,7 @@ dependencies {
     compile "com.appdynamics:machineagent:4.1.0"
 
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
-    compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.6.1'
+    compile 'com.appdynamics.ace.restQuery:RestMetricQueries:0.6.4'
     compile 'com.appdynamics.ace.adql:Client:0.4.4'
     compile 'quartz:quartz:1.5.2'
 
