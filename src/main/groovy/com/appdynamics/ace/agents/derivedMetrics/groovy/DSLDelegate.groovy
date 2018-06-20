@@ -123,6 +123,10 @@ class DSLDelegate extends Script   {
         MetricQuery mq = new MetricQuery();
 
         CompiledRestMetricQuery erg = mq.parse( query);
+        List<URI> uris = erg.getRestURI(_connection);
+        uris.forEach { uri ->
+            this.getLogger().debug("URI :"+uri);
+        }
         DataMap map = erg.execute(_connection);
         Column pCol = map.getHeader().find(){Column c->
             return c.name == "path";
