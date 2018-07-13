@@ -23,3 +23,13 @@ calculate (""" export aggregated 'Success Rate (%)' as sla
            """, {
     reportMetric("slaDoublePrecision2|nope|1|SLAhigh",avg('sla')*1000);
 })
+
+//Application Infrastructure Performance|Root|Master|Cluster|Individual Nodes|NSKDHJ|Hardware Resources|CPU|System
+
+calculate (""" export '%Busy' as busyCPU
+                        from 'Application Infrastructure Performance'. 'Root\\|Master\\|Cluster' . 'Individual Nodes|NSKDHJ|Hardware Resources|CPU'
+                         on Application 'Server & Infrastructure Monitoring'
+                         for 10 minutes 60 minutes ago
+           """, {
+    reportMetric("slaDoublePrecision3|nope|1|SLAhigh",avg('busyCPU'));
+})
