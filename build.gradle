@@ -20,7 +20,7 @@ mainClassName = "com.appdynamics.ace.agents.derivedMetrics.groovy.cli.Main"
 applicationDefaultJvmArgs = ["-Xms50m","-Xmx50m"]
 
 
-version='1.0'
+version='1.1'
 
 
 project.ext {
