@@ -1,35 +1,54 @@
-
 connect {
-     controller "smarxdocker2.ddns.net:8090"
-     account "customer1"
-     user "admin"
-     password "admin"
- }
+    controller "localhost:8090"
+    account "customer1"
+    user "SLA_Agent"
+    password "VV2764PjDf3Du20EM7"
+}
+
+
+// Leverages SLA percentages into pcm values
+// https://en.wikipedia.org/wiki/Per_cent_mille
+
+def SLAMap = [
+        3: "CentralJira",
+        4: "NovoCrowd",
+        5: "IT-Ticket",
+        6: "NovoWiki",
+        7: "Group-Ticket",
+        8: "NovoTicket",
+        9: "Code",
+        10: "DW ISO",
+        11: "DW Controlling",
+        12: "NPN Test App2_A",
+        13: "NPN-prod-App2_A",
+        14: "NPN-prod-App2_B",
+        16: "NPN Test App2_B",
+        17: "COLT",
+        18: "NOVOMATIC Jira",
+        19: "NOVOMATIC Confluence",
+        20: "NPN-prod-VIP",
+        21: "SecurityProxy",
+        22: "FuE-Bitbucket",
+        23: "BUILD",
+        24: "Novonet",
+        26: "NPN Train",
+        27: "DW Ext"
+];
 
 
 
-calculate (""" export aggregated 'Success Rate (%)' as sla
-                        from 'Application Infrastructure Performance'. * as cluster . 'Hardware Resources|Service Availability'. '1'
-                         on Application 'Server & Infrastructure Monitoring'
-                         for 1 minutes 10 minutes ago
-           """, {
-            reportMetric("slaDoublePrecision|${cluster}|1|SLAhigh",avg('sla')*1000);
-           })
+SLAMap.each {slaId,slaName ->
 
-calculate (""" export aggregated 'Success Rate (%)' as sla
-                        from 'Application Infrastructure Performance'. 'Root\\|Master\\|Cluster' . 'Hardware Resources|Service Availability'. '1'
-                         on Application 'Server & Infrastructure Monitoring'
-                         for 1 minutes 10 minutes ago
-           """, {
-    reportMetric("slaDoublePrecision2|nope|1|SLAhigh",avg('sla')*1000);
-})
+    try {
+        calculate (""" export aggregated 'Success Rate (%)' as sla
+                            from 'Application Infrastructure Performance'. 'Root\\|AM\\|IM' . 'Hardware Resources|Service Availability'. '$slaId'
+                             on Application 'Server & Infrastructure Monitoring'
+                             for 1 minutes 2 minutes ago
+               """, {
+            reportMetric("slaHigherPrecision|${slaName}|SLApcm",avg('sla')*1000);
+        })
 
-//Application Infrastructure Performance|Root|Master|Cluster|Individual Nodes|NSKDHJ|Hardware Resources|CPU|System
-
-calculate (""" export '%Busy' as busyCPU
-                        from 'Application Infrastructure Performance'. 'Root\\|Master\\|Cluster' . 'Individual Nodes|NSKDHJ|Hardware Resources|CPU'
-                         on Application 'Server & Infrastructure Monitoring'
-                         for 10 minutes 60 minutes ago
-           """, {
-    reportMetric("slaDoublePrecision3|nope|1|SLAhigh",avg('busyCPU'));
-})
+    } catch (Throwable t) {
+        // Do Nothing for now
+    }
+}

@@ -63,12 +63,13 @@ dependencies {
 
     cliRuntime ("log4j:log4j:1.2.17")
     cliRuntime "com.appdynamics:machineagent:4.1.0"
+    cliRuntime 'com.appdynamics.ace.cli:CommandFramework:1.4'
     cliRuntime 'com.appdynamics.ace.adql:Client:0.4.4'
     cliRuntime 'quartz:quartz:1.5.2'
 
 
     agentRuntime 'org.codehaus.groovy:groovy-all:2.4.6'
-    agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.5.4'
+    agentRuntime 'com.appdynamics.ace.restQuery:RestMetricQueries:0.6.4'
     agentRuntime 'com.appdynamics.ace.cli:CommandFramework:1.4'
     agentRuntime 'com.appdynamics.ace.adql:Client:0.4.4'
     agentRuntime 'quartz:quartz:1.5.2'
